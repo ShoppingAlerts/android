@@ -9,3 +9,8 @@ An Android app that sends you push notifications when the product you want hits 
 - The gist of this app happens via push notifications. The app runs a background service which searches Google Shopping periodically, and fetches product matches to the user via push notifs. Push notifications should ideally include a photo of the product and a clearly visible price
 - From the push notification, the user should be able to tap to open the app, and to shop for the item on the website where Google Shopping links to for that item
 - User should be able to manage alerts, archive, and delete searches, as well as edit the filters of existing searches
+
+# Wireframes
+
+
+![https://s3.amazonaws.com/uploads.hipchat.com/20599/752135/yKx8jBFZo63Xp8Z/FullSizeRender.jpg](https://s3.amazonaws.com/uploads.hipchat.com/20599/752135/yKx8jBFZo63Xp8Z/FullSizeRender.jpg)
