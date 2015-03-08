@@ -1,4 +1,4 @@
-package com.example.sophiataskova.googleshoppingnotifications;
+package com.shoppingalertsproject.sophiataskova.googleshoppingnotifications;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
