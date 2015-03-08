@@ -3,12 +3,17 @@ package com.shoppingalertsproject.sophiataskova.googleshoppingnotifications.acti
 import android.accounts.AccountManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.shoppingalertsproject.sophiataskova.googleshoppingnotifications.R;
+import com.shoppingalertsproject.sophiataskova.googleshoppingnotifications.fragments.SearchesHomeFragment;
 
 
 public class SearchesHomeActivity extends ActionBarActivity {
@@ -18,7 +23,9 @@ public class SearchesHomeActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_searches_home);
+        ViewPager vpPager = (ViewPager) findViewById(R.id.viewpager);
+        vpPager.setAdapter(new SearchesPagerAdapter(getSupportFragmentManager()));
+//        setContentView(R.layout.fragment_searches_home);
         pickUserAccount();
     }
 
@@ -69,5 +76,35 @@ public class SearchesHomeActivity extends ActionBarActivity {
             }
         }
         // Later, more code will go here to handle the result from some exceptions...
+    }
+
+    public class SearchesPagerAdapter extends FragmentPagerAdapter {
+
+        private String tabTitles[] = {"Home", "Mentions"};
+
+        public SearchesPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            if (position == 0) {
+                return new SearchesHomeFragment();
+            } else if (position == 1) {
+                return new MentionsTimelineFragment();
+            } else {
+                return null;
+            }
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return tabTitles[position];
+        }
+
+        @Override
+        public int getCount() {
+            return tabTitles.length;
+        }
     }
 }
