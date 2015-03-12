@@ -10,6 +10,8 @@ An Android app that sends you push notifications when the product you want hits 
 - From the push notification, the user should be able to tap to open the app, and to shop for the item on the website where Google Shopping links to for that item
 - User should be able to manage alerts, archive, and delete searches, as well as edit the filters of existing searches
 
+Current progress at ![gif](https://s3.amazonaws.com/uploads.hipchat.com/20599/752135/Cw5PMiA71Yyxm7x/smart_shopping_list.gif)
+
 # Wireframes
 
 
