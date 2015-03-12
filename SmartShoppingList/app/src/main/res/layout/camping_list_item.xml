@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="200dp">
+    <ImageView
+        android:id="@+id/camping_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#80FFFFFF"
+        android:layout_alignParentBottom="true">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:text="Camping"
+        android:textStyle="bold"
+        android:textColor="#060603"
+        android:id="@+id/textView" />
+    </LinearLayout>
+</RelativeLayout>
+
+    <!--https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&cad=rja&uact=8&ved=0CAcQjRw&url=http%3A%2F%2Fonmilwaukee.com%2Fvisitors%2Farticles%2Fcamping.html&ei=QeD_VOuXFZGrogTg9IDACA&bvm=bv.87920726,d.cGU&psig=AFQjCNE1WGga5tED_P-u5QdQ6zQu_oOCsA&ust=1426141591272723-->
