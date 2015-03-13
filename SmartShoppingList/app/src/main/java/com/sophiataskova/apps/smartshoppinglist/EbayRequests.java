@@ -1,8 +1,5 @@
 package com.sophiataskova.apps.smartshoppinglist;
 
-/**
- * Created by sophiataskova on 3/8/15.
- */
 public class EbayRequests {
 
 //    http://www.developer.ebay.com/DevZone/finding/CallRef/findItemsByKeywords.html#Request.keywords

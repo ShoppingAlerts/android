@@ -21,9 +21,10 @@ public class ListsActivity extends ActionBarActivity implements CreateSearchDial
 
         ShoppingListFragment shoppingListFragment = new ShoppingListFragment();
         Bundle args = new Bundle();
-        args.putString("shoppingitem", getIntent().getExtras().get("shoppingitem").toString());
-        shoppingListFragment.setArguments(args);
-
+//        if (getIntent()!=null) {
+//            args.putString("shoppingitem", getIntent().getExtras().get("shoppingitem").toString());
+//            shoppingListFragment.setArguments(args);
+//        }
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.shopping_list_placeholder, shoppingListFragment, "shoppinglistfragment").addToBackStack("shoppinglistfragment").commit();
     }
