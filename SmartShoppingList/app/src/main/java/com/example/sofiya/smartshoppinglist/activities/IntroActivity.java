@@ -1,116 +1,180 @@
 package com.example.sofiya.smartshoppinglist.activities;
 
-import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Point;
-import android.support.v7.app.ActionBarActivity;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.util.TypedValue;
-import android.view.Display;
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
-import android.widget.ImageView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.util.Log;
+import android.util.SparseArray;
+import android.view.ViewGroup;
 
+import com.astuetz.PagerSlidingTabStrip;
 import com.example.sofiya.smartshoppinglist.R;
+import com.example.sofiya.smartshoppinglist.fragments.ResultsListFragment;
+import com.example.sofiya.smartshoppinglist.fragments.ShoppingListFragment;
+import com.example.sofiya.smartshoppinglist.models.SearchItem;
 
 
-public class IntroActivity extends ActionBarActivity {
+public class IntroActivity extends FragmentActivity {
 
-    public static int screenWidth;
+
+    FragmentPagerAdapter adapterViewPager;
+
+
+
+    ViewPager viewPager;
+
+    public static ShoppingListFragment getmShoppingListFragment() {
+        return mShoppingListFragment;
+    }
+
+    private static ShoppingListFragment mShoppingListFragment;
+
+
+    private static ResultsListFragment mResultsListFragment;
+
+    public FragmentPagerAdapter getAdapterViewPager() {
+        return adapterViewPager;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.i("Debug", "onCreate IntroActivity");
         setContentView(R.layout.activity_intro);
-        prepareBitmaps();
-        prepareEditText();
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        adapterViewPager = new ShoppingPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(adapterViewPager);
+
+        PagerSlidingTabStrip pagerSlidingTabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+        pagerSlidingTabStrip.setViewPager(viewPager);
+        mResultsListFragment = new ResultsListFragment();
+        mShoppingListFragment = new ShoppingListFragment();
+//        Bundle args = new Bundle();
+//        if (getIntent().hasExtra("shoppingitem")) {
+//            args.putString("shoppingitem", getIntent().getExtras().get("shoppingitem").toString());
+//            mShoppingListFragment.setArguments(args);
+//        }
     }
 
-    private void prepareEditText() {
-        final EditText editText = (EditText) findViewById(R.id.i_need);
-        editText.setImeOptions(EditorInfo.IME_ACTION_GO);
-        editText.setOnKeyListener(new View.OnKeyListener() {
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
-                        (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                    Intent i = new Intent(IntroActivity.this, IntroActivity.class);
-                    i.putExtra("shoppingitem", editText.getText());
-                    startActivity(i);
-                    return true;
-                }
-                return false;
-            }
-        });
+
+
+
+    public static void persistSearch(SearchItem itemToAdd) {
+        SearchItem searchItem = new SearchItem(itemToAdd.getSearchKeywords(), false); // Todo unhardcode alerts from false
+        searchItem.save();
     }
 
-    private void prepareBitmaps() {
-        getScreenWidth();
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        ImageView campingImageView = (ImageView) findViewById(R.id.camping_image);
-        ImageView schoolImageView = (ImageView) findViewById(R.id.school_image);
-        ImageView travelImageView = (ImageView) findViewById(R.id.travel_image);
-        options.inJustDecodeBounds = true;
-        Resources resources = getResources();
-        float itemHeight = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 150, resources.getDisplayMetrics());
-        campingImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        schoolImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        travelImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        campingImageView.setImageBitmap(
-                decodeSampledBitmapFromResource(resources, R.drawable.camping_fullsize, screenWidth, Math.round(itemHeight)));
-        schoolImageView.setImageBitmap(
-                decodeSampledBitmapFromResource(resources, R.drawable.back_to_school, screenWidth, Math.round(itemHeight)));
-        travelImageView.setImageBitmap(
-                decodeSampledBitmapFromResource(resources, R.drawable.travel, screenWidth, Math.round(itemHeight)));
+    public static void deleteSearch(SearchItem itemToDelete) {
+        SearchItem searchItem = SearchItem.findById(SearchItem.class, (long)1);
+        searchItem.delete();
     }
+    public static class ShoppingPagerAdapter extends FragmentPagerAdapter {
+        SparseArray<Fragment> registeredFragments = new SparseArray<Fragment>();
+        private static int NUM_ITEMS = 2;
+        private String tabTitles[] = {"SEARCH", "WISHLIST"};
 
-    public static int calculateInSampleSize(
-            BitmapFactory.Options options, int reqWidth, int reqHeight) {
-        // Raw height and width of image
-        final int height = options.outHeight;
-        final int width = options.outWidth;
-        int inSampleSize = 1;
+        public ShoppingPagerAdapter(FragmentManager fragmentManager) {
+            super(fragmentManager);
+        }
 
-        if (height > reqHeight || width > reqWidth) {
+        // Returns total number of pages
+        @Override
+        public int getCount() {
+            return NUM_ITEMS;
+        }
 
-            final int halfHeight = height / 2;
-            final int halfWidth = width / 2;
-
-            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
-            // height and width larger than the requested height and width.
-            while ((halfHeight / inSampleSize) > reqHeight
-                    && (halfWidth / inSampleSize) > reqWidth) {
-                inSampleSize *= 2;
+        // Returns the fragment to display for that page
+        @Override
+        public Fragment getItem(int position) {
+            if (position == 0) {
+                return mResultsListFragment;
+            } else if (position == 1) {
+                return mShoppingListFragment;
+            } else {
+                return null;
             }
         }
 
-        return inSampleSize;
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            Fragment fragment = (Fragment) super.instantiateItem(container, position);
+            registeredFragments.put(position, fragment);
+            return fragment;
+        }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            registeredFragments.remove(position);
+            super.destroyItem(container, position, object);
+        }
+
+        // Returns the page title for the top indicator
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return tabTitles[position];
+        }
+
     }
 
-    public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId,
-                                                         int reqWidth, int reqHeight) {
-
-        // First decode with inJustDecodeBounds=true to check dimensions
-        final BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeResource(res, resId, options);
-
-        // Calculate inSampleSize
-        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
-
-        // Decode bitmap with inSampleSize set
-        options.inJustDecodeBounds = false;
-        return BitmapFactory.decodeResource(res, resId, options);
+    public Boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
     }
 
-    public void getScreenWidth() {
-        Display display = getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        screenWidth = size.x;
+    public ViewPager getViewPager() {
+        return viewPager;
     }
+
+    public ResultsListFragment getmResultsListFragment() {
+        return mResultsListFragment;
+    }
+//    public static int calculateInSampleSize (
+//            BitmapFactory.Options options, int reqWidth, int reqHeight) {
+//        // Raw height and width of image
+//        final int height = options.outHeight;
+//        final int width = options.outWidth;
+//        int inSampleSize = 1;
+//
+//        if (height > reqHeight || width > reqWidth) {
+//
+//            final int halfHeight = height / 2;
+//            final int halfWidth = width / 2;
+//
+//            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+//            // height and width larger than the requested height and width.
+//            while ((halfHeight / inSampleSize) > reqHeight
+//                    && (halfWidth / inSampleSize) > reqWidth) {
+//                inSampleSize *= 2;
+//            }
+//        }
+//
+//        return inSampleSize;
+//    }
+
+//    public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId,
+//                                                         int reqWidth, int reqHeight) {
+//
+//        // First decode with inJustDecodeBounds=true to check dimensions
+//        final BitmapFactory.Options options = new BitmapFactory.Options();
+//        options.inJustDecodeBounds = true;
+//        BitmapFactory.decodeResource(res, resId, options);
+//
+//        // Calculate inSampleSize
+//        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+//
+//        // Decode bitmap with inSampleSize set
+//        options.inJustDecodeBounds = false;
+//        return BitmapFactory.decodeResource(res, resId, options);
+//    }
+
+
 }
 

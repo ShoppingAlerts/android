@@ -3,23 +3,35 @@ package com.example.sofiya.smartshoppinglist.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class SearchItem implements Parcelable{
+import com.orm.SugarRecord;
+
+import static com.orm.SugarApp.getSugarContext;
+
+public class SearchItem extends SugarRecord<SearchItem> implements Parcelable {
+    private String searchKeywords;
+    private boolean getAlerts;
+
     public String getSearchKeywords() {
         return searchKeywords;
     }
 
     public SearchItem(String searchKeywords) {
         this.searchKeywords = searchKeywords;
+        getAlerts = false;
     }
 
+    public SearchItem(){}
 
+    public SearchItem(String searchKeywords, boolean getAlerts) {
+        this.searchKeywords = searchKeywords;
+        this.getAlerts = getAlerts;
+    }
     public SearchItem(Parcel in){
         String[] data = new String[3];
 
         in.readStringArray(data);
         this.searchKeywords = data[0];
     }
-    private String searchKeywords;
 
 
     @Override
@@ -42,8 +54,12 @@ public class SearchItem implements Parcelable{
         }
     };
 
-
-    public static SearchItem fromSearchModel(SearchModel searchModel) {
-        return new SearchItem(searchModel.keywords);
+    public static boolean exists() {
+        return (getSugarContext()!=null);
     }
+
+//
+//    public static SearchItem fromSearchModel(SearchModel searchModel) {
+//        return new SearchItem(searchModel.keywords);
+//    }
 }

@@ -1,5 +1,6 @@
 package com.example.sofiya.smartshoppinglist.fragments;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -11,17 +12,20 @@ import android.widget.ListView;
 import com.example.sofiya.smartshoppinglist.R;
 import com.example.sofiya.smartshoppinglist.SearchItemsArrayAdapter;
 import com.example.sofiya.smartshoppinglist.models.SearchItem;
-import com.example.sofiya.smartshoppinglist.models.SearchModel;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.sofiya.smartshoppinglist.activities.IntroActivity.persistSearch;
 
 /**
  * Created by sofiya on 3/13/15.
  */
 public class ShoppingListFragment extends Fragment {
     private ArrayList<SearchItem> searchItems;
-
+    private CreateSearchDialogFragment mComposeDialog;
+//    private FloatingActionButton mFloatingActionButton;
+    private View mNoItemsYet;
 
     protected SearchItemsArrayAdapter mSearchItemsArrayAdapter;
     private ListView searchItemsListView;
@@ -29,7 +33,7 @@ public class ShoppingListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Log.i("debug", "onCreate shoppinglistfragment");
 
     }
 
@@ -37,12 +41,15 @@ public class ShoppingListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Defines the xml file for the fragment
+        Log.i("debug", "onCreateView shoppinglistfragment");
         View view = inflater.inflate(R.layout.fragment_shopping_list, container, false);
 
         mSearchItemsArrayAdapter =
                 new SearchItemsArrayAdapter(getActivity(), android.R.layout.simple_list_item_1);
 
         searchItemsListView = (ListView) view.findViewById(R.id.lv_shopping_list);
+
+        mNoItemsYet = view.findViewById(R.id.no_items);
         searchItemsListView.setAdapter(mSearchItemsArrayAdapter);
         if (getArguments() != null) {
             SearchItem itemToAdd = new SearchItem(getArguments().getString("shoppingitem").toString());
@@ -50,32 +57,49 @@ public class ShoppingListFragment extends Fragment {
             persistSearch(itemToAdd);
         }
         retrieveSearchesFromDB();
+        if (!mSearchItemsArrayAdapter.isEmpty()) {
+            mNoItemsYet.setVisibility(View.GONE);
+        }
         return view;
     }
 
-    public void persistSearches() {
-        Log.i("DEBUG", "testing search persist");
-        for (int i = 0; i < getmSearchItemsArrayAdapter().getCount(); i++) {
-            SearchItem searchItem = getmSearchItemsArrayAdapter().getItem(i);
-            SearchModel searchModel = new SearchModel(searchItem.getSearchKeywords(), false); // Todo unhardcode alerts from false
-            searchModel.save();
+    private void showComposeDialog() {
+        mComposeDialog = CreateSearchDialogFragment.newInstance(getResources().getString(R.string.compose_search));
+        mComposeDialog.show(getActivity().getSupportFragmentManager(), "fragment_compose_search");
+    }
+
+//    public void persistSearches() {
+//        Log.i("DEBUG", "testing search persist");
+//        for (int i = 0; i < getmSearchItemsArrayAdapter().getCount(); i++) {
+//            SearchItem searchItem = getmSearchItemsArrayAdapter().getItem(i);
+////            SearchItem searchModel = new SearchModel(searchItem.getSearchKeywords(), false); // Todo unhardcode alerts from false
+//            searchItem.save();
+//        }
+//    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        Log.i("debug", "onAttach shoppinglistfragment");
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.i("debug", "onstart shoppinglistfragment");
+    }
+
+    public void retrieveSearchesFromDB() {
+        if (SearchItem.exists()) {
+            List<SearchItem> allSearchModels = SearchItem.listAll(SearchItem.class);
+            mSearchItemsArrayAdapter.clear();
+
+            for (SearchItem searchModel1 : allSearchModels) {
+                mSearchItemsArrayAdapter.add(searchModel1);
+                Log.i("DEBUG", "keyword is " + searchModel1.getSearchKeywords());
+
+            }
         }
-    }
-
-    private void persistSearch(SearchItem itemToAdd) {
-        SearchModel searchModel = new SearchModel(itemToAdd.getSearchKeywords(), false); // Todo unhardcode alerts from false
-        searchModel.save();
-    }
-
-    private void retrieveSearchesFromDB() {
-        if (SearchModel.exists()) {
-        List<SearchModel> allSearchModels = SearchModel.listAll(SearchModel.class);
-
-        for (SearchModel searchModel1 : allSearchModels) {
-            mSearchItemsArrayAdapter.add(SearchItem.fromSearchModel(searchModel1));
-            Log.i("DEBUG", "keyword is " + SearchItem.fromSearchModel(searchModel1).getSearchKeywords());
-
-        }}
     }
 
     public SearchItemsArrayAdapter getmSearchItemsArrayAdapter() {

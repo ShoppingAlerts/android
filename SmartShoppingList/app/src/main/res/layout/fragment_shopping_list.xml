@@ -11,6 +11,7 @@
         android:layout_centerInParent="true">
 
         <com.devspark.robototextview.widget.RobotoTextView
+            android:id="@+id/no_items"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
@@ -23,17 +24,4 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true" />
-
-    <com.melnykov.fab.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_margin="26dp"
-        android:src="@drawable/ic_plus"
-        fab:fab_colorNormal="#abdcee"
-        fab:fab_colorPressed="#bbbbbb"
-        fab:fab_colorRipple="#eeeeee" />
-
 </RelativeLayout>
