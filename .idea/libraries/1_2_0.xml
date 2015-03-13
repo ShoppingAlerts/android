@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="1.2.0">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/SmartShoppingList/app/build/intermediates/exploded-aar/com.melnykov/floatingactionbutton/1.2.0/annotations.zip!/" />
+      <root url="jar://$PROJECT_DIR$/SmartShoppingList/app/build/intermediates/exploded-aar/com.melnykov/floatingactionbutton/1.2.0/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

@@ -1,0 +1,25 @@
+<component name="libraryTable">
+  <library name="debug">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/SmartShoppingList/app/build/intermediates/pre-dexed/debug/android-async-http-1.4.6-97661a0b2dc405f83d6e968a3f8724097dcf6592.jar!/" />
+      <root url="jar://$PROJECT_DIR$/SmartShoppingList/app/build/intermediates/pre-dexed/debug/codepath-oauth-0.4.1-759094c992ba3b5ff2ec5aed83673e8972872705.jar!/" />
+      <root url="jar://$PROJECT_DIR$/SmartShoppingList/app/build/intermediates/pre-dexed/debug/classes-a223e971e07dacaed40bcff864819447439bac72.jar!/" />
+      <root url="jar://$PROJECT_DIR$/SmartShoppingList/app/build/intermediates/pre-dexed/debug/classes-12f2ff8dec54119ada35834e12c673b8c956e52e.jar!/" />
+      <root url="jar://$PROJECT_DIR$/SmartShoppingList/app/build/intermediates/pre-dexed/debug/library-2.4.0-9520568c7f94eb5a3bc29f3b70b99fc6fb39aca5.jar!/" />
+      <root url="jar://$PROJECT_DIR$/SmartShoppingList/app/build/intermediates/pre-dexed/debug/classes-2ba9dc3af01e95fe9b5211f3083702591ce0af8a.jar!/" />
+      <root url="jar://$PROJECT_DIR$/SmartShoppingList/app/build/intermediates/pre-dexed/debug/classes-1492c410f8f9c0918b4695dae4cb727d58f4a520.jar!/" />
+      <root url="jar://$PROJECT_DIR$/SmartShoppingList/app/build/intermediates/pre-dexed/debug/scribe-codepath-0.0.3-082dec3d584207f23a10b0af6ba9792d6d8f8163.jar!/" />
+      <root url="jar://$PROJECT_DIR$/SmartShoppingList/app/build/intermediates/pre-dexed/debug/support-annotations-21.0.3-cac009b5bedcf28f5b42b301145340114b75be55.jar!/" />
+      <root url="jar://$PROJECT_DIR$/SmartShoppingList/app/build/intermediates/pre-dexed/debug/commons-lang3-3.1-0cfcf0637d765cfd72798b44f957a3535c3e9a80.jar!/" />
+      <root url="jar://$PROJECT_DIR$/SmartShoppingList/app/build/intermediates/pre-dexed/debug/internal_impl-21.0.3-b7ad4b56da7b7899938b0a89040cb9a917746d33.jar!/" />
+      <root url="jar://$PROJECT_DIR$/SmartShoppingList/app/build/intermediates/pre-dexed/debug/classes-df6fc74cabf6286036cb37fff1e7f3e3ca1fb912.jar!/" />
+      <root url="jar://$PROJECT_DIR$/SmartShoppingList/app/build/intermediates/pre-dexed/debug/classes-3424559cc946efe68e2fa05d43bb330e2fe08208.jar!/" />
+      <root url="jar://$PROJECT_DIR$/SmartShoppingList/app/build/intermediates/pre-dexed/debug/picasso-2.4.0-e203407b339d38b97a1930e6c5396455b0493b0e.jar!/" />
+      <root url="jar://$PROJECT_DIR$/SmartShoppingList/app/build/intermediates/pre-dexed/debug/codepath-utils-131bd726e63b10b22a4c320a7d77365771a91291.jar!/" />
+      <root url="jar://$PROJECT_DIR$/SmartShoppingList/app/build/intermediates/pre-dexed/debug/activeandroid-3.1.0-SNAPSHOT-18c9ee3417697e923a69f3309b6299e239abfca9.jar!/" />
+      <root url="jar://$PROJECT_DIR$/SmartShoppingList/app/build/intermediates/pre-dexed/debug/classes-3838cf3ec9ce613ed8bef75bfec8dd2dcaf03670.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

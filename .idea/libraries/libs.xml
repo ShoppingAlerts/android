@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="libs">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/SmartShoppingList/app/libs/scribe-codepath-0.0.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/SmartShoppingList/app/libs/codepath-oauth-0.4.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/SmartShoppingList/app/libs/codepath-utils.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
