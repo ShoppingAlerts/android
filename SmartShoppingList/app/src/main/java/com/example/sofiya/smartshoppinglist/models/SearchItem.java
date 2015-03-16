@@ -9,30 +9,34 @@ import static com.orm.SugarApp.getSugarContext;
 
 public class SearchItem extends SugarRecord<SearchItem> implements Parcelable {
     private String searchKeywords;
-    private boolean getAlerts;
+    private String maxPrice;
+
 
     public String getSearchKeywords() {
         return searchKeywords;
     }
 
+    public String getMaxPrice() {
+        return maxPrice;
+    }
+
     public SearchItem(String searchKeywords) {
         this.searchKeywords = searchKeywords;
-        getAlerts = false;
     }
 
     public SearchItem(){}
 
-    public SearchItem(String searchKeywords, boolean getAlerts) {
+    public SearchItem(String searchKeywords, String price) {
         this.searchKeywords = searchKeywords;
-        this.getAlerts = getAlerts;
+        this.maxPrice = price;
     }
     public SearchItem(Parcel in){
-        String[] data = new String[3];
+        String[] data = new String[2];
 
         in.readStringArray(data);
         this.searchKeywords = data[0];
+        this.maxPrice = data[1];
     }
-
 
     @Override
     public int describeContents() {
@@ -41,7 +45,7 @@ public class SearchItem extends SugarRecord<SearchItem> implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeStringArray(new String[] {this.searchKeywords});
+        dest.writeStringArray(new String[] {this.searchKeywords, this.maxPrice});
     }
 
     public static final Creator CREATOR = new Creator() {
@@ -57,9 +61,4 @@ public class SearchItem extends SugarRecord<SearchItem> implements Parcelable {
     public static boolean exists() {
         return (getSugarContext()!=null);
     }
-
-//
-//    public static SearchItem fromSearchModel(SearchModel searchModel) {
-//        return new SearchItem(searchModel.keywords);
-//    }
 }

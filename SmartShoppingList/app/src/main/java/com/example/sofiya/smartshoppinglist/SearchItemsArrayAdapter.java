@@ -25,16 +25,24 @@ public class SearchItemsArrayAdapter extends ArrayAdapter<SearchItem> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.search_item, parent, false);
         }
         TextView keyWords = (TextView) convertView.findViewById(R.id.keywords);
+        TextView maxPrice = (TextView) convertView.findViewById(R.id.max_price);
+        TextView bestPrice = (TextView) convertView.findViewById(R.id.best_price);
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (getContext() instanceof IntroActivity) {
-                    startSearchForKeywords((IntroActivity) getContext(), searchItem.getSearchKeywords());
+//                    startSearchForKeywords((IntroActivity) getContext(), searchItem.getSearchKeywords());
                 }
             }
         });
         if (searchItem.getSearchKeywords() != null) {
             keyWords.setText(searchItem.getSearchKeywords());
+        }
+        if (searchItem.getMaxPrice() != null) {
+            maxPrice.setText(searchItem.getMaxPrice());
+        }
+        if (((IntroActivity)getContext()).getmResultsListFragment().getBestPrice()!=null) {
+            bestPrice.setText(((IntroActivity)getContext()).getmResultsListFragment().getBestPrice());
         }
         return convertView;
     }

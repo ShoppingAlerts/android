@@ -5,14 +5,13 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.sofiya.smartshoppinglist.EbayItemsArrayAdapter;
@@ -21,6 +20,7 @@ import com.example.sofiya.smartshoppinglist.EndlessScrollListener;
 import com.example.sofiya.smartshoppinglist.R;
 import com.example.sofiya.smartshoppinglist.activities.IntroActivity;
 import com.example.sofiya.smartshoppinglist.models.EbayItem;
+import com.example.sofiya.smartshoppinglist.models.SearchItem;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -32,16 +32,15 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import static com.example.sofiya.smartshoppinglist.SearchItemsArrayAdapter.startSearchForKeywords;
+import static com.example.sofiya.smartshoppinglist.activities.IntroActivity.persistSearch;
 
-/**
- * Created by sofiya on 3/13/15.
- */
 public class ResultsListFragment extends Fragment {
 
     protected EbayItemsArrayAdapter mEbayItemsArrayAdapter;
     private ArrayList<EbayItem> ebayItems;
     private ListView lvShoppingList;
     private EditText keywordsEditText, filterEditText;
+    private Button saveButton;
     protected SwipeRefreshLayout swipeContainer;
 
     private String filter;
@@ -49,6 +48,12 @@ public class ResultsListFragment extends Fragment {
     private int mCurrentPage;
     private String keywords;
     private String mPaginatedUrl;
+
+    public String getBestPrice() {
+        return bestPrice;
+    }
+
+    private String bestPrice;
     private String title;
     private int page;
 
@@ -82,12 +87,21 @@ public class ResultsListFragment extends Fragment {
         prepareEditText(v);
         prepareFilters(v);
         swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
-
+        saveButton = (Button) v.findViewById(R.id.save_search);
         lvShoppingList = (ListView) v.findViewById(R.id.lv_shopping_list);
         lvShoppingList.setAdapter(mEbayItemsArrayAdapter);
-
-
-
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                saveButton.setEnabled(false);
+                Toast.makeText(getActivity(), keywordsEditText.getText() +" selected",Toast.LENGTH_SHORT).show();
+                SearchItem itemToAdd = new SearchItem(keywordsEditText.getText().toString(), filterEditText.getText().toString());
+                persistSearch(itemToAdd);
+                ((IntroActivity)getActivity()).getmShoppingListFragment().retrieveSearchesFromDB();
+                ((IntroActivity)getActivity()).getViewPager().setCurrentItem(1);
+                startSearchForKeywords((IntroActivity)getActivity() , keywordsEditText.getText().toString(), filterEditText.getText().toString());
+            }
+        });
 
         lvShoppingList.setOnScrollListener(new EndlessScrollListener() {
             @Override
@@ -115,17 +129,17 @@ public class ResultsListFragment extends Fragment {
     private void prepareFilters(View container) {
         filterEditText = (EditText) container.findViewById(R.id.max_price_text);
         filterEditText.setImeOptions(EditorInfo.IME_ACTION_GO);
-        filterEditText.setOnEditorActionListener(new EditText.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_UNSPECIFIED) {
-                    String filterText = filterEditText.getText().toString();
-                    startSearchForKeywords((IntroActivity)getActivity() , keywordsEditText.getText().toString(), filterText);
-                    return true;
-                }
-                return false;
-            }
-        });
+//        filterEditText.setOnEditorActionListener(new EditText.OnEditorActionListener() {
+//            @Override
+//            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+//                if (actionId == EditorInfo.IME_ACTION_UNSPECIFIED) {
+//                    String filterText = filterEditText.getText().toString();
+//                    startSearchForKeywords((IntroActivity)getActivity() , keywordsEditText.getText().toString(), filterText);
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
     }
 
     private void prepareEditText(View container) {
@@ -133,17 +147,17 @@ public class ResultsListFragment extends Fragment {
         keywordsEditText.setFocusableInTouchMode(true);
         keywordsEditText.requestFocus();
         keywordsEditText.setImeOptions(EditorInfo.IME_ACTION_GO);
-        keywordsEditText.setOnEditorActionListener(new EditText.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_UNSPECIFIED) {
-                    startSearchForKeywords((IntroActivity)getActivity(), keywordsEditText.getText().toString());
-                    getView().findViewById(R.id.filters_layout).setVisibility(View.VISIBLE);
-                    return true;
-                }
-                return false;
-            }
-        });
+//        keywordsEditText.setOnEditorActionListener(new EditText.OnEditorActionListener() {
+//            @Override
+//            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+//                if (actionId == EditorInfo.IME_ACTION_UNSPECIFIED) {
+//                    startSearchForKeywords((IntroActivity)getActivity(), keywordsEditText.getText().toString());
+//                    getView().findViewById(R.id.filters_layout).setVisibility(View.VISIBLE);
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
     }
 
     public EbayItemsArrayAdapter getmEbayItemsArrayAdapter() {
@@ -163,7 +177,8 @@ public class ResultsListFragment extends Fragment {
 
         mPaginatedUrl = EbayRequests.sSearchByKeywordUrl.concat(searchKeywords + EbayRequests.sPageNumberUrl + 1 + EbayRequests.sPaginationUrl + 10);
         if (filter != null) {
-            mPaginatedUrl = mPaginatedUrl.concat("&itemFilter(0).name=MaxPrice&itemFilter(0).value=" + filter + "&itemFilter(0).paramName=Currency&itemFilter(0).paramValue=USD");
+            mEbayItemsArrayAdapter.setPriceFilter(filter);
+            mPaginatedUrl = mPaginatedUrl.concat("&itemFilter(0).name=MaxPrice&itemFilter(0).value=" + filter + "&itemFilter(0).paramName=Currency&itemFilter(0).paramValue=USD&sortOrder=PricePlusShippingLowest");
         }
         Log.i("INFO", "searchUrl is " + mPaginatedUrl);
         AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
@@ -185,7 +200,8 @@ public class ResultsListFragment extends Fragment {
 //                        if (mCurrentPage == 0) {
 //                            imageResults.clear();
 //                        }
-
+                        EbayItem bestPriceItem = EbayItem.fromJsonArray(ebayItemsResult).get(0);
+                        bestPrice = String.valueOf(bestPriceItem.getPrice());
                         mEbayItemsArrayAdapter.addAll(EbayItem.fromJsonArray(ebayItemsResult));
                         if (mEbayItemsArrayAdapter.isEmpty()) {
 //                            getView().findViewById(R.id.no_results).setVisibility(View.VISIBLE);
@@ -206,6 +222,10 @@ public class ResultsListFragment extends Fragment {
         else {
             Toast.makeText(getActivity(), "No network connectivity", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public String getFilter() {
+        return filter;
     }
 
     public void setFilter(String filter) {

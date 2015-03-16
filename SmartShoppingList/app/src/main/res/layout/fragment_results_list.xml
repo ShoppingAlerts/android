@@ -29,8 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_margin="20dp"
-            android:orientation="vertical"
-            android:visibility="gone">
+            android:orientation="vertical">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -50,16 +49,11 @@
             </LinearLayout>
 
         </LinearLayout>
-        <!--<FrameLayout-->
-        <!--android:id="@+id/results_list_placeholder"-->
-        <!--android:layout_height="500dp"-->
-        <!--android:background="#FFA2A1"-->
-        <!--android:layout_width="match_parent"/>-->
-        <!--<FrameLayout-->
-        <!--android:id="@+id/shopping_list_placeholder"-->
-        <!--android:layout_height="500dp"-->
-        <!--android:background="#FFA2A1"-->
-        <!--android:layout_width="match_parent"/>-->
+        <Button
+            android:id="@+id/save_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Save search"/>
     </LinearLayout>
     <android.support.v4.widget.SwipeRefreshLayout
         xmlns:android="http://schemas.android.com/apk/res/android"

@@ -16,8 +16,6 @@ import com.example.sofiya.smartshoppinglist.models.SearchItem;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.sofiya.smartshoppinglist.activities.IntroActivity.persistSearch;
-
 /**
  * Created by sofiya on 3/13/15.
  */
@@ -51,11 +49,11 @@ public class ShoppingListFragment extends Fragment {
 
         mNoItemsYet = view.findViewById(R.id.no_items);
         searchItemsListView.setAdapter(mSearchItemsArrayAdapter);
-        if (getArguments() != null) {
-            SearchItem itemToAdd = new SearchItem(getArguments().getString("shoppingitem").toString());
-            mSearchItemsArrayAdapter.add(itemToAdd);
-            persistSearch(itemToAdd);
-        }
+//        if (getArguments() != null) {
+//            SearchItem itemToAdd = new SearchItem(getArguments().getString("shoppingitem").toString());
+//            mSearchItemsArrayAdapter.add(itemToAdd);
+//            persistSearch(itemToAdd);
+//        }
         retrieveSearchesFromDB();
         if (!mSearchItemsArrayAdapter.isEmpty()) {
             mNoItemsYet.setVisibility(View.GONE);
@@ -97,7 +95,9 @@ public class ShoppingListFragment extends Fragment {
             for (SearchItem searchModel1 : allSearchModels) {
                 mSearchItemsArrayAdapter.add(searchModel1);
                 Log.i("DEBUG", "keyword is " + searchModel1.getSearchKeywords());
-
+            }
+            if (!allSearchModels.isEmpty()) {
+                mNoItemsYet.setVisibility(View.GONE);
             }
         }
     }

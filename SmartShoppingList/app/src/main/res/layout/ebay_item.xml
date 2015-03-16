@@ -17,15 +17,15 @@
         android:layout_height="200dp"
         android:scaleType="center"
         tools:src="@drawable/ic_launcher" />
-        <ImageButton
-            android:id="@+id/add_button"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerInParent="true"
-            android:layout_marginRight="20dp"
-            android:saveEnabled="true"
-            android:background="@drawable/add_search_icon"/>
+        <!--<ImageButton-->
+            <!--android:id="@+id/add_button"-->
+            <!--android:layout_width="50dp"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_centerInParent="true"-->
+            <!--android:layout_marginRight="20dp"-->
+            <!--android:saveEnabled="true"-->
+            <!--android:background="@drawable/add_search_icon"/>-->
     </RelativeLayout>
 
     <RelativeLayout
