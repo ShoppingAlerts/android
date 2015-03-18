@@ -38,22 +38,20 @@ public class ResultsListFragment extends Fragment {
 
     protected EbayItemsArrayAdapter mEbayItemsArrayAdapter;
     private ArrayList<EbayItem> ebayItems;
-    private ListView lvShoppingList;
+    private ListView lvResultsList;
     private EditText keywordsEditText, filterEditText;
     private Button saveButton;
     protected SwipeRefreshLayout swipeContainer;
 
     private String filter;
 
+    private static SearchItem sItemToAdd;
     private int mCurrentPage;
     private String keywords;
     private String mPaginatedUrl;
 
-    public String getBestPrice() {
-        return bestPrice;
-    }
-
-    private String bestPrice;
+    private static String sBestPrice;
+    private static String sBestPriceUrl;
     private String title;
     private int page;
 
@@ -88,22 +86,18 @@ public class ResultsListFragment extends Fragment {
         prepareFilters(v);
         swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
         saveButton = (Button) v.findViewById(R.id.save_search);
-        lvShoppingList = (ListView) v.findViewById(R.id.lv_shopping_list);
-        lvShoppingList.setAdapter(mEbayItemsArrayAdapter);
+        lvResultsList = (ListView) v.findViewById(R.id.lv_results_list);
+        lvResultsList.setAdapter(mEbayItemsArrayAdapter);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                saveButton.setEnabled(false);
                 Toast.makeText(getActivity(), keywordsEditText.getText() +" selected",Toast.LENGTH_SHORT).show();
-                SearchItem itemToAdd = new SearchItem(keywordsEditText.getText().toString(), filterEditText.getText().toString());
-                persistSearch(itemToAdd);
-                ((IntroActivity)getActivity()).getmShoppingListFragment().retrieveSearchesFromDB();
-                ((IntroActivity)getActivity()).getViewPager().setCurrentItem(1);
                 startSearchForKeywords((IntroActivity)getActivity() , keywordsEditText.getText().toString(), filterEditText.getText().toString());
             }
         });
 
-        lvShoppingList.setOnScrollListener(new EndlessScrollListener() {
+        lvResultsList.setOnScrollListener(new EndlessScrollListener() {
             @Override
             public void onLoadMore(int page, int totalItemsCount) {
                 customLoadMoreDataFromApi(page);
@@ -201,9 +195,19 @@ public class ResultsListFragment extends Fragment {
 //                            imageResults.clear();
 //                        }
                         EbayItem bestPriceItem = EbayItem.fromJsonArray(ebayItemsResult).get(0);
-                        bestPrice = String.valueOf(bestPriceItem.getPrice());
+                        sBestPrice = String.valueOf(bestPriceItem.getPrice());
+                        sBestPriceUrl = bestPriceItem.getUrl();
+                        sItemToAdd = new SearchItem(keywordsEditText.getText().toString(), filterEditText.getText().toString(), "", "");
+                        if (sItemToAdd != null) {
+                            sItemToAdd.setBestPrice(sBestPrice);
+                            sItemToAdd.setBestPriceUrl(sBestPriceUrl);
+                            persistSearch(sItemToAdd); }
+
                         mEbayItemsArrayAdapter.addAll(EbayItem.fromJsonArray(ebayItemsResult));
+                        ((IntroActivity)getActivity()).getmShoppingListFragment().retrieveSearchesFromDB();
+                        ((IntroActivity)getActivity()).getViewPager().setCurrentItem(1);
                         if (mEbayItemsArrayAdapter.isEmpty()) {
+
 //                            getView().findViewById(R.id.no_results).setVisibility(View.VISIBLE);
 //                            gvResults.setVisibility(View.GONE);
                         } else {

@@ -66,7 +66,7 @@ public class IntroActivity extends FragmentActivity {
 
 
     public static void persistSearch(SearchItem itemToAdd) {
-        SearchItem searchItem = new SearchItem(itemToAdd.getSearchKeywords(), itemToAdd.getMaxPrice()); // Todo unhardcode alerts from false
+        SearchItem searchItem = new SearchItem(itemToAdd.getSearchKeywords(), itemToAdd.getWantPrice(), itemToAdd.getBestPrice(), itemToAdd.getBestPriceUrl()); // Todo unhardcode alerts from false
         searchItem.save();
     }
 

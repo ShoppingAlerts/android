@@ -9,15 +9,32 @@ import static com.orm.SugarApp.getSugarContext;
 
 public class SearchItem extends SugarRecord<SearchItem> implements Parcelable {
     private String searchKeywords;
-    private String maxPrice;
+    private String wantPrice;
+    private String bestPriceUrl;
+    private String bestPrice;
 
+    public void setBestPriceUrl(String bestPriceUrl) {
+        this.bestPriceUrl = bestPriceUrl;
+    }
+
+    public String getBestPriceUrl() {
+        return bestPriceUrl;
+    }
+
+    public void setBestPrice(String bestPrice) {
+        this.bestPrice = bestPrice;
+    }
 
     public String getSearchKeywords() {
         return searchKeywords;
     }
 
-    public String getMaxPrice() {
-        return maxPrice;
+    public String getWantPrice() {
+        return wantPrice;
+    }
+
+    public String getBestPrice() {
+        return bestPrice;
     }
 
     public SearchItem(String searchKeywords) {
@@ -26,16 +43,20 @@ public class SearchItem extends SugarRecord<SearchItem> implements Parcelable {
 
     public SearchItem(){}
 
-    public SearchItem(String searchKeywords, String price) {
+    public SearchItem(String searchKeywords, String wantPrice, String bestPrice, String bestPriceUrl) {
         this.searchKeywords = searchKeywords;
-        this.maxPrice = price;
+        this.wantPrice = wantPrice;
+        this.bestPrice = bestPrice;
+        this.bestPriceUrl = bestPriceUrl;
     }
     public SearchItem(Parcel in){
-        String[] data = new String[2];
+        String[] data = new String[4];
 
         in.readStringArray(data);
         this.searchKeywords = data[0];
-        this.maxPrice = data[1];
+        this.wantPrice = data[1];
+        this.bestPrice = data[2];
+        this.bestPrice = data[3];
     }
 
     @Override
@@ -45,7 +66,7 @@ public class SearchItem extends SugarRecord<SearchItem> implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeStringArray(new String[] {this.searchKeywords, this.maxPrice});
+        dest.writeStringArray(new String[] {this.searchKeywords, this.wantPrice, this.bestPrice, this.bestPriceUrl});
     }
 
     public static final Creator CREATOR = new Creator() {

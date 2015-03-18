@@ -1,6 +1,8 @@
 package com.example.sofiya.smartshoppinglist;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.view.LayoutInflater;
@@ -24,25 +26,37 @@ public class SearchItemsArrayAdapter extends ArrayAdapter<SearchItem> {
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.search_item, parent, false);
         }
-        TextView keyWords = (TextView) convertView.findViewById(R.id.keywords);
-        TextView maxPrice = (TextView) convertView.findViewById(R.id.max_price);
-        TextView bestPrice = (TextView) convertView.findViewById(R.id.best_price);
+        TextView keyWordsTextView = (TextView) convertView.findViewById(R.id.keywords);
+        TextView wantPriceTextView = (TextView) convertView.findViewById(R.id.want_price);
+        TextView bestPriceTextView = (TextView) convertView.findViewById(R.id.best_price_value);
+        TextView bestPriceLabel = (TextView) convertView.findViewById(R.id.best_price_text);
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (getContext() instanceof IntroActivity) {
-//                    startSearchForKeywords((IntroActivity) getContext(), searchItem.getSearchKeywords());
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse(searchItem.getBestPriceUrl()));
+                    getContext().startActivity(i);
                 }
             }
         });
         if (searchItem.getSearchKeywords() != null) {
-            keyWords.setText(searchItem.getSearchKeywords());
+            keyWordsTextView.setText(searchItem.getSearchKeywords());
         }
-        if (searchItem.getMaxPrice() != null) {
-            maxPrice.setText(searchItem.getMaxPrice());
+        if (searchItem.getWantPrice() != null) {
+            wantPriceTextView.setText(searchItem.getWantPrice());
         }
-        if (((IntroActivity)getContext()).getmResultsListFragment().getBestPrice()!=null) {
-            bestPrice.setText(((IntroActivity)getContext()).getmResultsListFragment().getBestPrice());
+        String bestPriceString = searchItem.getBestPrice();
+        if (bestPriceString != null) {
+            bestPriceTextView.setText(bestPriceString);
+            if (!searchItem.getWantPrice().equals("") && !bestPriceString.equals("")){
+            if (Double.parseDouble(bestPriceString) <= Double.parseDouble(searchItem.getWantPrice())) {
+                bestPriceLabel.setTextColor(getContext().getResources().getColor(R.color.green));
+                bestPriceTextView.setTextColor(getContext().getResources().getColor(R.color.green));
+            } else {
+                bestPriceLabel.setTextColor(getContext().getResources().getColor(R.color.red));
+                bestPriceTextView.setTextColor(getContext().getResources().getColor(R.color.red));
+            }}
         }
         return convertView;
     }

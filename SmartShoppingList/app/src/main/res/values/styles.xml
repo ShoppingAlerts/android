@@ -22,9 +22,10 @@
     </style>
     <style name="BlueActionBar"
         parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
-        <item name="android:background">@color/actionbar_blue</item>
+        <item name="android:background">@color/primary</item>
+        <item name="android:textColor">@android:color/white</item>
 
         <!-- Support library compatibility -->
-        <item name="background">@color/actionbar_blue</item>
+        <item name="background">@color/primary</item>
     </style>
 </resources>

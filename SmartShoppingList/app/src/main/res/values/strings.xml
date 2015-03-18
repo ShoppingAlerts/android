@@ -2,10 +2,10 @@
 <resources>
     <string name="app_name">Smart Shopping List</string>
     <string name="title_activity_shopping_list">Wish list</string>
-    <string name="title_activity_intro">Choose your adventure</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_intro">Shopping alerts</string>
     <string name="action_settings">Settings</string>
     <string name="compose_search">Compose search</string>
+    <string name="browse_items">Browse items</string>
     <string name="edit_empty_string_error">Please enter text</string>
     <string name="profile">Profile</string>
     <string name="title_activity_profile">ProfileActivity</string>
