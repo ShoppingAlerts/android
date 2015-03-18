@@ -11,6 +11,8 @@ import android.widget.ListView;
 
 import com.example.sofiya.smartshoppinglist.R;
 import com.example.sofiya.smartshoppinglist.SearchItemsArrayAdapter;
+import com.example.sofiya.smartshoppinglist.SwipeDismissListViewTouchListener;
+import com.example.sofiya.smartshoppinglist.activities.IntroActivity;
 import com.example.sofiya.smartshoppinglist.models.SearchItem;
 
 import java.util.ArrayList;
@@ -49,6 +51,26 @@ public class ShoppingListFragment extends Fragment {
 
         mNoItemsYet = view.findViewById(R.id.no_items);
         searchItemsListView.setAdapter(mSearchItemsArrayAdapter);
+
+        SwipeDismissListViewTouchListener touchListener =
+                new SwipeDismissListViewTouchListener(
+                        searchItemsListView,
+                        new SwipeDismissListViewTouchListener.DismissCallbacks() {
+                            @Override
+                            public boolean canDismiss(int position) {
+                                return true;
+                            }
+
+                            @Override
+                            public void onDismiss(ListView listView, int[] reverseSortedPositions) {
+                                for (int position : reverseSortedPositions) {
+                                    mSearchItemsArrayAdapter.remove(mSearchItemsArrayAdapter.getItem(position));
+                                    ((IntroActivity)getActivity()).deleteSearch(mSearchItemsArrayAdapter.getItem(position));
+                                }
+                                mSearchItemsArrayAdapter.notifyDataSetChanged();
+                            }
+                        });
+        searchItemsListView.setOnTouchListener(touchListener);
 //        if (getArguments() != null) {
 //            SearchItem itemToAdd = new SearchItem(getArguments().getString("shoppingitem").toString());
 //            mSearchItemsArrayAdapter.add(itemToAdd);

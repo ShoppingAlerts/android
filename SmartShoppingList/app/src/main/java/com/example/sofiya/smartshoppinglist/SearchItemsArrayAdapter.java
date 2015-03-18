@@ -3,8 +3,6 @@ package com.example.sofiya.smartshoppinglist;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +10,6 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.example.sofiya.smartshoppinglist.activities.IntroActivity;
-import com.example.sofiya.smartshoppinglist.fragments.ResultsListFragment;
 import com.example.sofiya.smartshoppinglist.models.SearchItem;
 
 public class SearchItemsArrayAdapter extends ArrayAdapter<SearchItem> {
@@ -61,38 +58,6 @@ public class SearchItemsArrayAdapter extends ArrayAdapter<SearchItem> {
         return convertView;
     }
 
-    public static void startSearchForKeywords(IntroActivity context, String searchKeywords) {
 
-        FragmentPagerAdapter fragmentPagerAdapter = context.getAdapterViewPager();
-        for (int i = 0; i < fragmentPagerAdapter.getCount(); i++) {
-            String name = makeFragmentName(context.getViewPager().getId(), i);
-            Fragment viewPagerFragment = context.getSupportFragmentManager().findFragmentByTag(name);
-            if (viewPagerFragment != null) {
-                if (viewPagerFragment instanceof ResultsListFragment && viewPagerFragment.isResumed()) {
-                    ((ResultsListFragment) viewPagerFragment).makeRequest(0, searchKeywords);
-
-                }
-            }
-        }
-    }
-
-    public static void startSearchForKeywords(IntroActivity context, String searchKeywords, String filter) {
-
-        FragmentPagerAdapter fragmentPagerAdapter = context.getAdapterViewPager();
-        for (int i = 0; i < fragmentPagerAdapter.getCount(); i++) {
-            String name = makeFragmentName(context.getViewPager().getId(), i);
-            Fragment viewPagerFragment = context.getSupportFragmentManager().findFragmentByTag(name);
-            if (viewPagerFragment != null) {
-                if (viewPagerFragment instanceof ResultsListFragment && viewPagerFragment.isResumed()) {
-                    ((ResultsListFragment) viewPagerFragment).setFilter(filter);
-                    ((ResultsListFragment) viewPagerFragment).makeRequest(0, searchKeywords);
-                }
-            }
-        }
-    }
-
-    private static String makeFragmentName(int viewId, int position) {
-        return "android:switcher:" + viewId + ":" + position;
-    }
 
 }

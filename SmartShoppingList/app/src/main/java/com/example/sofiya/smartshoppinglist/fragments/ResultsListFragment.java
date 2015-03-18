@@ -3,6 +3,7 @@ package com.example.sofiya.smartshoppinglist.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,7 +32,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import static com.example.sofiya.smartshoppinglist.SearchItemsArrayAdapter.startSearchForKeywords;
 import static com.example.sofiya.smartshoppinglist.activities.IntroActivity.persistSearch;
 
 public class ResultsListFragment extends Fragment {
@@ -46,6 +46,9 @@ public class ResultsListFragment extends Fragment {
     private String filter;
 
     private static SearchItem sItemToAdd;
+
+    private boolean addingItem = false;
+    private boolean startup;
     private int mCurrentPage;
     private String keywords;
     private String mPaginatedUrl;
@@ -69,6 +72,7 @@ public class ResultsListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ebayItems = new ArrayList<EbayItem>();
+        startup = true;
 
         mEbayItemsArrayAdapter = new EbayItemsArrayAdapter(getActivity(), ebayItems);
         mCurrentPage = 1;
@@ -80,7 +84,7 @@ public class ResultsListFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
+        Log.i("debug","oncreateview resultslistfragment");
         View v = inflater.inflate(R.layout.fragment_results_list, container, false);
         prepareEditText(v);
         prepareFilters(v);
@@ -91,7 +95,6 @@ public class ResultsListFragment extends Fragment {
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                saveButton.setEnabled(false);
                 Toast.makeText(getActivity(), keywordsEditText.getText() +" selected",Toast.LENGTH_SHORT).show();
                 startSearchForKeywords((IntroActivity)getActivity() , keywordsEditText.getText().toString(), filterEditText.getText().toString());
             }
@@ -103,21 +106,22 @@ public class ResultsListFragment extends Fragment {
                 customLoadMoreDataFromApi(page);
             }
         });
-        return v;
-    }
-
-    @Override
-    public void onStart() {
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
 
                 mEbayItemsArrayAdapter.clear();
-                makeRequest(0, keywords);
+                if (startup || keywords!=null){
+                    makeRequest(0, keywords);
+                    startup = false;
+                }
             }
         });
-        makeRequest(0, keywords);
-        super.onStart();
+        if (startup || keywords!=null){
+            makeRequest(0, keywords);
+            startup = false;
+        }
+        return v;
     }
 
     private void prepareFilters(View container) {
@@ -166,6 +170,7 @@ public class ResultsListFragment extends Fragment {
     }
 
     public void makeRequest(final int offset, final String searchKeywords) {
+        Log.i("debug", "making request with keywords "+ searchKeywords + " because startup is " +startup);
         mEbayItemsArrayAdapter.clear();
         mCurrentPage = offset;
 
@@ -194,18 +199,35 @@ public class ResultsListFragment extends Fragment {
 //                        if (mCurrentPage == 0) {
 //                            imageResults.clear();
 //                        }
-                        EbayItem bestPriceItem = EbayItem.fromJsonArray(ebayItemsResult).get(0);
-                        sBestPrice = String.valueOf(bestPriceItem.getPrice());
-                        sBestPriceUrl = bestPriceItem.getUrl();
-                        sItemToAdd = new SearchItem(keywordsEditText.getText().toString(), filterEditText.getText().toString(), "", "");
-                        if (sItemToAdd != null) {
-                            sItemToAdd.setBestPrice(sBestPrice);
-                            sItemToAdd.setBestPriceUrl(sBestPriceUrl);
-                            persistSearch(sItemToAdd); }
+                        if (addingItem) {
+                            EbayItem bestPriceItem = null;
+                            for (int i = 0; i< ebayItemsResult.length(); i++) {
+                                if (EbayItem.fromJsonArray(ebayItemsResult).get(i).getUrl() != null) {
+                                    bestPriceItem = EbayItem.fromJsonArray(ebayItemsResult).get(i);
+                                    break;
+                                }
+                            }
+
+                            if (bestPriceItem != null) {
+                            sBestPrice = String.valueOf(bestPriceItem.getPrice());
+                            sBestPriceUrl = bestPriceItem.getUrl();
+
+                            sItemToAdd = new SearchItem(keywordsEditText.getText().toString(), filterEditText.getText().toString(), "", "");
+                            if (sItemToAdd != null) {
+                                sItemToAdd.setBestPrice(sBestPrice);
+                                sItemToAdd.setBestPriceUrl(sBestPriceUrl);
+                                persistSearch(sItemToAdd);
+                            }
+                            ((IntroActivity) getActivity()).getmShoppingListFragment().retrieveSearchesFromDB();
+                            ((IntroActivity) getActivity()).getViewPager().setCurrentItem(1);
+                            addingItem = false;
+                            }
+                            else {
+                                Toast.makeText(getActivity(), "No results for these keywords", Toast.LENGTH_SHORT).show();
+                            }
+                        }
 
                         mEbayItemsArrayAdapter.addAll(EbayItem.fromJsonArray(ebayItemsResult));
-                        ((IntroActivity)getActivity()).getmShoppingListFragment().retrieveSearchesFromDB();
-                        ((IntroActivity)getActivity()).getViewPager().setCurrentItem(1);
                         if (mEbayItemsArrayAdapter.isEmpty()) {
 
 //                            getView().findViewById(R.id.no_results).setVisibility(View.VISIBLE);
@@ -228,8 +250,47 @@ public class ResultsListFragment extends Fragment {
         }
     }
 
+    public void startSearchForKeywords(IntroActivity context, String searchKeywords) {
+
+        FragmentPagerAdapter fragmentPagerAdapter = context.getAdapterViewPager();
+        for (int i = 0; i < fragmentPagerAdapter.getCount(); i++) {
+            String name = makeFragmentName(context.getViewPager().getId(), i);
+            Fragment viewPagerFragment = context.getSupportFragmentManager().findFragmentByTag(name);
+            if (viewPagerFragment != null) {
+                if (viewPagerFragment instanceof ResultsListFragment && viewPagerFragment.isResumed()) {
+                    this.addingItem = true;
+                    ((ResultsListFragment) viewPagerFragment).makeRequest(0, searchKeywords);
+
+                }
+            }
+        }
+    }
+
+    public void startSearchForKeywords(IntroActivity context, String searchKeywords, String filter) {
+
+        FragmentPagerAdapter fragmentPagerAdapter = context.getAdapterViewPager();
+        for (int i = 0; i < fragmentPagerAdapter.getCount(); i++) {
+            String name = makeFragmentName(context.getViewPager().getId(), i);
+            Fragment viewPagerFragment = context.getSupportFragmentManager().findFragmentByTag(name);
+            if (viewPagerFragment != null) {
+                if (viewPagerFragment instanceof ResultsListFragment && viewPagerFragment.isResumed()) {
+                    this.addingItem = true;
+                    ((ResultsListFragment) viewPagerFragment).setFilter(filter);
+                    ((ResultsListFragment) viewPagerFragment).makeRequest(0, searchKeywords);
+                }
+            }
+        }
+    }
+
+    private static String makeFragmentName(int viewId, int position) {
+        return "android:switcher:" + viewId + ":" + position;
+    }
+
     public String getFilter() {
         return filter;
+    }
+    public void setAddingItem(boolean addingItem) {
+        this.addingItem = addingItem;
     }
 
     public void setFilter(String filter) {
