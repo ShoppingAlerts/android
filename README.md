@@ -11,7 +11,7 @@ An Android app that sends you push notifications when the product you want hits 
 - User should be able to manage alerts, archive, and delete searches, as well as edit the filters of existing searches
 
 ### Sprint 2 
-Progress at ![video](https://s3.amazonaws.com/uploads.hipchat.com/20599/752135/moTtmbof9YIgRMS/demo_shopping_alerts.mp4)
+Progress at https://s3.amazonaws.com/uploads.hipchat.com/20599/752135/moTtmbof9YIgRMS/demo_shopping_alerts.mp4
 
 # Mockups
 
