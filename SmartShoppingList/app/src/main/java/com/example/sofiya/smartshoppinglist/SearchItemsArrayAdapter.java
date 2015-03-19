@@ -50,6 +50,7 @@ public class SearchItemsArrayAdapter extends ArrayAdapter<SearchItem> {
             if (Double.parseDouble(bestPriceString) <= Double.parseDouble(searchItem.getWantPrice())) {
                 bestPriceLabel.setTextColor(getContext().getResources().getColor(R.color.green));
                 bestPriceTextView.setTextColor(getContext().getResources().getColor(R.color.green));
+                ((IntroActivity)getContext()).createNotification(123, R.drawable.ic_launcher, "Shopping Alerts", searchItem.getSearchKeywords() + "'s price has dropped! Buy now?", searchItem.getBestPriceUrl());
             } else {
                 bestPriceLabel.setTextColor(getContext().getResources().getColor(R.color.red));
                 bestPriceTextView.setTextColor(getContext().getResources().getColor(R.color.red));
