@@ -18,7 +18,8 @@
         android:name="com.orm.SugarApp">
         <activity
             android:name=".activities.IntroActivity"
-            android:label="@string/title_activity_intro"  >
+            android:label="@string/title_activity_intro"
+            android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

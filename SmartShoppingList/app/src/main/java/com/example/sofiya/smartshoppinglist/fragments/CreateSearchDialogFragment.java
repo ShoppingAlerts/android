@@ -9,14 +9,19 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.sofiya.smartshoppinglist.R;
+import com.example.sofiya.smartshoppinglist.activities.IntroActivity;
 
 /**
  * Created by sofiya on 3/13/15.
  */
 public class CreateSearchDialogFragment extends DialogFragment implements TextView.OnEditorActionListener, View.OnClickListener{
     private EditText mEditText;
+
+    private String mAlertKeywords;
+    private boolean isCustomSearch;
 
     private TextView mPrefilledKeywords;
     private TextView mPrefilledItemTitle;
@@ -51,6 +56,7 @@ public class CreateSearchDialogFragment extends DialogFragment implements TextVi
 
         mPrefilledItemTitle.setText(title);
         mPrefilledItemTitle.setFocusable(true);
+        mDoneButton.setFocusable(true);
 
         mPrefilledKeywords.setText(prefill);
         mPrefilledKeywords.setFocusable(true);
@@ -58,25 +64,20 @@ public class CreateSearchDialogFragment extends DialogFragment implements TextVi
         mPrefilledItemTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mEditText.clearFocus();
-                mEditText.setAlpha((float) 0.5);
-                mEditText.setTextColor(getResources().getColor(R.color.fifty_percent_edit_text_dark));
-                v.setFocusable(true);
+                isCustomSearch = false;
+                mAlertKeywords = mPrefilledItemTitle.getText().toString();
+                enablePrefills();
                 v.setSelected(true);
-                mPrefilledItemTitle.setAlpha(1);
-                mPrefilledKeywords.setAlpha(1);
                 mPrefilledKeywords.setSelected(false);
             }
         });
         mPrefilledKeywords.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mEditText.setAlpha((float) 0.5);
-                mEditText.setTextColor(getResources().getColor(R.color.fifty_percent_edit_text_dark));
-                mEditText.clearFocus();
+                isCustomSearch = false;
+                mAlertKeywords = mPrefilledKeywords.getText().toString();
+                enablePrefills();
                 v.setSelected(true);
-                mPrefilledItemTitle.setAlpha(1);
-                mPrefilledKeywords.setAlpha(1);
                 mPrefilledItemTitle.setSelected(false);
             }
         });
@@ -85,37 +86,49 @@ public class CreateSearchDialogFragment extends DialogFragment implements TextVi
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-                    mPrefilledKeywords.setAlpha((float) 0.5);
-                    mPrefilledItemTitle.setAlpha((float) 0.5);
+                    isCustomSearch = true;
+                    disablePrefills();
                     mEditText.setAlpha((float) 1);
                     mEditText.setTextColor(getResources().getColor(R.color.edit_text_dark));
-//                    mPrefilledKeywords.setEnabled(false);
-//                    mPrefilledItemTitle.setEnabled(false);
                 }
-//                else if (v.equals(mPrefilledItemTitle) || v.equals(mPrefilledKeywords)){
-//                    mPrefilledKeywords.setAlpha((float) 1);
-//                    mPrefilledItemTitle.setAlpha((float) 1);
-//                    mEditText.setAlpha((float)0.8);
-////                    mPrefilledKeywords.setEnabled(true);
-////                    mPrefilledItemTitle.setEnabled(true);
-//                }
+                else {
+                    ((IntroActivity)getActivity()).dismissKeyboard(mEditText);
+                    if (isCustomSearch) {
+                        mAlertKeywords = mEditText.getText().toString();
+                    }
+                }
             }
         });
         mDoneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                applyContentChanges();
+                mEditText.clearFocus();
+                Toast.makeText(getActivity(), mAlertKeywords, Toast.LENGTH_SHORT).show();
+
+//                applyContentChanges();
             }
         });
 
         return v;
     }
 
+    private void disablePrefills() {
+        mPrefilledKeywords.setAlpha((float) 0.5);
+        mPrefilledItemTitle.setAlpha((float) 0.5);
+    }
+
+    private void enablePrefills() {
+        mEditText.clearFocus();
+        mEditText.setAlpha((float) 0.5);
+        mEditText.setTextColor(getResources().getColor(R.color.fifty_percent_edit_text_dark));
+        mPrefilledKeywords.setAlpha(1);
+        mPrefilledItemTitle.setAlpha(1);
+    }
+
     private void applyContentChanges() {
         ComposeSearchDialogListener listener = (ComposeSearchDialogListener) getActivity();
 
         listener.onFinishEditDialog(mEditText.getText().toString());
-//        getActivity().dismissKeyboard();
         dismiss();
 
     }

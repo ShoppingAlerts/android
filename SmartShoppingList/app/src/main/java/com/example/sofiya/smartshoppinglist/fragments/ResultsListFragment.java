@@ -149,6 +149,7 @@ public class ResultsListFragment extends Fragment {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_UNSPECIFIED) {
+                    ((IntroActivity)getActivity()).dismissKeyboard(keywordsEditText);
                     keywords = keywordsEditText.getText().toString();
                     startSearchForKeywords((IntroActivity)getActivity(), keywordsEditText.getText().toString());
                     mSwipeContainer.setVisibility(View.VISIBLE);
