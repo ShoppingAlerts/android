@@ -11,6 +11,8 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -42,7 +44,7 @@ public class ResultsListFragment extends Fragment {
     private EditText keywordsEditText, filterEditText;
 //    private Button saveButton;
     protected SwipeRefreshLayout mSwipeContainer;
-    protected View mCategories;
+    protected View mCategories, mClearEditText;
 
     protected ImageButton mBackButton;
     private String filter;
@@ -97,6 +99,26 @@ public class ResultsListFragment extends Fragment {
         mSwipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
         mCategories = v.findViewById(R.id.categories);
         mBackButton = (ImageButton) v.findViewById(R.id.back_button);
+        mClearEditText = v.findViewById(R.id.calc_clear_txt_Prise);
+        final Animation enterAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.enter);
+        final Animation leaveAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.leave);
+
+        mClearEditText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                keywordsEditText.setText("");
+            }
+        });
+        mBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCategories.setVisibility(View.VISIBLE);
+                mCategories.startAnimation(enterAnimation);
+                mSwipeContainer.startAnimation(leaveAnimation);
+                mSwipeContainer.setVisibility(View.GONE);
+                mBackButton.setVisibility(View.GONE);
+            }
+        });
 //        saveButton = (Button) v.findViewById(R.id.save_search);
         lvResultsList = (ListView) v.findViewById(R.id.lv_results_list);
         lvResultsList.setAdapter(mEbayItemsArrayAdapter);
@@ -151,9 +173,13 @@ public class ResultsListFragment extends Fragment {
                 if (actionId == EditorInfo.IME_ACTION_UNSPECIFIED) {
                     ((IntroActivity)getActivity()).dismissKeyboard(keywordsEditText);
                     keywords = keywordsEditText.getText().toString();
-                    startSearchForKeywords((IntroActivity)getActivity(), keywordsEditText.getText().toString());
-                    mSwipeContainer.setVisibility(View.VISIBLE);
-                    mBackButton.setVisibility(View.VISIBLE);
+                    if (keywords.contains("\\")) {
+                        Toast.makeText(getActivity(), "Couldn't run search: check your input for backslashes!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        startSearchForKeywords((IntroActivity)getActivity(), keywordsEditText.getText().toString());
+                        mSwipeContainer.setVisibility(View.VISIBLE);
+                        mBackButton.setVisibility(View.VISIBLE);
+                    }
                     return true;
                 }
                 return false;

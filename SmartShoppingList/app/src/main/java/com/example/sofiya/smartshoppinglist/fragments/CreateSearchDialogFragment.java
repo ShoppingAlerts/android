@@ -103,6 +103,9 @@ public class CreateSearchDialogFragment extends DialogFragment implements TextVi
             @Override
             public void onClick(View v) {
                 mEditText.clearFocus();
+                if (mAlertKeywords == null) {
+                    Toast.makeText(getActivity(), "Please set a keyword", Toast.LENGTH_SHORT).show();
+                }
                 Toast.makeText(getActivity(), mAlertKeywords, Toast.LENGTH_SHORT).show();
 
 //                applyContentChanges();
