@@ -80,7 +80,7 @@
                 android:id="@+id/buy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackgroundBorderless"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:src="@drawable/ic_shop" />
         </LinearLayout>
@@ -96,7 +96,7 @@
                 android:id="@+id/add_alert"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackgroundBorderless"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
                 android:clickable="true"
                 android:src="@drawable/ic_notification" />
         </LinearLayout>

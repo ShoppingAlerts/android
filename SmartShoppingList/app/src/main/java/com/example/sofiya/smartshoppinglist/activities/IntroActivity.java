@@ -47,6 +47,13 @@ public class IntroActivity extends FragmentActivity {
     public FragmentPagerAdapter getAdapterViewPager() {
         return adapterViewPager;
     }
+//
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        MenuInflater inflater = getMenuInflater();
+//        inflater.inflate(R.menu.search, menu);
+//        return super.onCreateOptionsMenu(menu);
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +63,7 @@ public class IntroActivity extends FragmentActivity {
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         adapterViewPager = new ShoppingPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapterViewPager);
+
 
         PagerSlidingTabStrip pagerSlidingTabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         pagerSlidingTabStrip.setViewPager(viewPager);

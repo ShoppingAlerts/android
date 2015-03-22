@@ -1,29 +1,21 @@
 package com.example.sofiya.smartshoppinglist.fragments;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.sofiya.smartshoppinglist.EbayItemsArrayAdapter;
 import com.example.sofiya.smartshoppinglist.EbayRequests;
-import com.example.sofiya.smartshoppinglist.EndlessScrollListener;
 import com.example.sofiya.smartshoppinglist.R;
 import com.example.sofiya.smartshoppinglist.activities.IntroActivity;
 import com.example.sofiya.smartshoppinglist.models.EbayItem;
@@ -46,7 +38,7 @@ public class ResultsListFragment extends Fragment {
     private ArrayList<EbayItem> ebayItems;
     private ListView lvResultsList;
     private EditText keywordsEditText, filterEditText;
-    private Button saveButton;
+//    private Button saveButton;
     protected SwipeRefreshLayout swipeContainer;
 
     private String filter;
@@ -95,23 +87,23 @@ public class ResultsListFragment extends Fragment {
         prepareEditText(v);
         prepareFilters(v);
         swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
-        saveButton = (Button) v.findViewById(R.id.save_search);
+//        saveButton = (Button) v.findViewById(R.id.save_search);
         lvResultsList = (ListView) v.findViewById(R.id.lv_results_list);
         lvResultsList.setAdapter(mEbayItemsArrayAdapter);
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getActivity(), keywordsEditText.getText() +" selected",Toast.LENGTH_SHORT).show();
-                startSearchForKeywords((IntroActivity)getActivity() , keywordsEditText.getText().toString(), filterEditText.getText().toString());
-            }
-        });
+//        saveButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(getActivity(), keywordsEditText.getText() +" selected",Toast.LENGTH_SHORT).show();
+//                startSearchForKeywords((IntroActivity)getActivity() , keywordsEditText.getText().toString(), filterEditText.getText().toString());
+//            }
+//        });
 
-        lvResultsList.setOnScrollListener(new EndlessScrollListener() {
-            @Override
-            public void onLoadMore(int page, int totalItemsCount) {
-                customLoadMoreDataFromApi(page);
-            }
-        });
+//        lvResultsList.setOnScrollListener(new EndlessScrollListener() {
+//            @Override
+//            public void onLoadMore(int page, int totalItemsCount) {
+//                customLoadMoreDataFromApi(page);
+//            }
+//        });
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -133,8 +125,8 @@ public class ResultsListFragment extends Fragment {
 
 
     private void prepareFilters(View container) {
-        filterEditText = (EditText) container.findViewById(R.id.max_price_text);
-        filterEditText.setImeOptions(EditorInfo.IME_ACTION_GO);
+//        filterEditText = (EditText) container.findViewById(R.id.max_price_text);
+//        filterEditText.setImeOptions(EditorInfo.IME_ACTION_GO);
 //        filterEditText.setOnEditorActionListener(new EditText.OnEditorActionListener() {
 //            @Override
 //            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {

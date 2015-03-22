@@ -8,5 +8,6 @@
     <string name="browse_items">Browse items</string>
     <string name="edit_empty_string_error">Please enter text</string>
     <string name="profile">Profile</string>
+    <string name="i_need">I need...</string>
     <string name="title_activity_profile">ProfileActivity</string>
 </resources>
