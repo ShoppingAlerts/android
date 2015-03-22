@@ -10,6 +10,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.sofiya.smartshoppinglist.activities.IntroActivity;
+import com.example.sofiya.smartshoppinglist.fragments.CreateSearchDialogFragment;
 import com.example.sofiya.smartshoppinglist.models.EbayItem;
 import com.squareup.picasso.Picasso;
 
@@ -37,7 +39,7 @@ public class EbayItemsArrayAdapter extends ArrayAdapter<EbayItem> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.ebay_item, parent, false);
         }
         ImageView itemPhoto = (ImageView) convertView.findViewById(R.id.item_photo);
-        TextView title = (TextView) convertView.findViewById(R.id.item_title);
+        final TextView title = (TextView) convertView.findViewById(R.id.item_title);
         TextView timeStamp = (TextView) convertView.findViewById(R.id.price);
         View shopButton = convertView.findViewById(R.id.buy);
         View alertButton = convertView.findViewById(R.id.add_alert);
@@ -49,6 +51,12 @@ public class EbayItemsArrayAdapter extends ArrayAdapter<EbayItem> {
             itemPhoto.setImageResource(android.R.color.transparent);
             Picasso.with(getContext()).load(ebayItem.getImageUrl()).into(itemPhoto);
         }
+        alertButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showComposeDialog(ebayItem.getTitle(), ((IntroActivity)getContext()).getmResultsListFragment().getKeywords());
+            }
+        });
         shopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,6 +68,9 @@ public class EbayItemsArrayAdapter extends ArrayAdapter<EbayItem> {
         return convertView;
     }
 
+    private void showComposeDialog(String title, String keywords) {
+        CreateSearchDialogFragment mComposeDialog = CreateSearchDialogFragment.newInstance(title, keywords);
+        mComposeDialog.show(((IntroActivity)getContext()).getSupportFragmentManager(), "fragment_compose_search"); }
 //    @Override
 //    public EbayItem onCreateViewHolder(ViewGroup parent, int viewType) {
 //        return null;

@@ -83,10 +83,10 @@ public class ShoppingListFragment extends Fragment {
         return view;
     }
 
-    private void showComposeDialog() {
-        mComposeDialog = CreateSearchDialogFragment.newInstance(getResources().getString(R.string.compose_search));
-        mComposeDialog.show(getActivity().getSupportFragmentManager(), "fragment_compose_search");
-    }
+//    private void showComposeDialog() {
+//        mComposeDialog = CreateSearchDialogFragment.newInstance(getResources().getString(R.string.create_alert_for));
+//        mComposeDialog.show(getActivity().getSupportFragmentManager(), "fragment_compose_search");
+//    }
 
 //    public void persistSearches() {
 //        Log.i("DEBUG", "testing search persist");

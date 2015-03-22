@@ -6,15 +6,11 @@
     android:orientation="vertical"
     tools:context="com.sophiataskova.apps.smartshoppinglist.activities.ListsBaseActivity">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/square"
             android:elevation="50dp"
             android:orientation="vertical">
 
@@ -30,17 +26,31 @@
                     android:clickable="true"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
                     android:visibility="gone"/>
-                <EditText
-                    android:id="@+id/i_need"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:hint="@string/search_by_keyword"
-                    android:imeActionLabel="Go"
-                    android:imeOptions="actionGo"
-                    android:maxLines="1"
-                    android:padding="15dp"
-                    android:singleLine="true" />
+                <FrameLayout
+                    android:id="@+id/plain_text_search"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+                    <EditText
+                        android:id="@+id/i_need"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:hint="@string/search_by_keyword"
+                        android:imeActionLabel="Go"
+                        android:imeOptions="actionGo"
+                        android:maxLines="1"
+                        android:padding="15dp"
+                        android:singleLine="true" />
+                    <Button
+                        android:id="@+id/calc_clear_txt_Prise"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_gravity="right|center_vertical"
+                        android:background="@mipmap/ic_delete" />
+
+                </FrameLayout>
+
             </LinearLayout>
 
             <LinearLayout
@@ -50,12 +60,6 @@
                 android:padding="10dp"
                 android:orientation="horizontal"
                 android:visibility="gone">
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/ic_action_back"
-                    android:clickable="true"
-                    android:background="?android:attr/selectableItemBackgroundBorderless"/>
                 <com.devspark.robototextview.widget.RobotoTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -98,7 +102,6 @@
             <!--android:text= ".00"/>-->
             <!--</LinearLayout>-->
 
-        </LinearLayout>
         <!--<Button-->
         <!--android:id="@+id/save_search"-->
         <!--android:layout_width="match_parent"-->

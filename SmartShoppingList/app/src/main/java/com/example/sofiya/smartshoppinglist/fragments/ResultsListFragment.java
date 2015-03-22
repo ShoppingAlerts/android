@@ -52,6 +52,10 @@ public class ResultsListFragment extends Fragment {
     private boolean addingItem = false;
     private boolean startup;
     private int mCurrentPage;
+
+
+
+
     private String keywords;
     private String mPaginatedUrl;
 
@@ -145,6 +149,7 @@ public class ResultsListFragment extends Fragment {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_UNSPECIFIED) {
+                    keywords = keywordsEditText.getText().toString();
                     startSearchForKeywords((IntroActivity)getActivity(), keywordsEditText.getText().toString());
                     mSwipeContainer.setVisibility(View.VISIBLE);
                     mBackButton.setVisibility(View.VISIBLE);
@@ -305,7 +310,9 @@ public class ResultsListFragment extends Fragment {
     public void setAddingItem(boolean addingItem) {
         this.addingItem = addingItem;
     }
-
+    public String getKeywords() {
+        return keywords;
+    }
     public void setFilter(String filter) {
         this.filter = filter;
     }

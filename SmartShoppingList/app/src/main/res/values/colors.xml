@@ -7,4 +7,6 @@
     <!--<color name="primary_dark">#00796B</color>-->
     <color name="primary_dark">#009688</color>
     <color name="accent">#A7FFEB</color>
+    <color name="fifty_percent_edit_text_dark">#801F1F1F</color>
+    <color name="edit_text_dark">#1F1F1F</color>
 </resources>

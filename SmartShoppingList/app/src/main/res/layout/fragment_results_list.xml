@@ -6,31 +6,30 @@
     android:orientation="vertical"
     tools:context="com.sophiataskova.apps.smartshoppinglist.activities.ListsBaseActivity">
 
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:elevation="50dp"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/square"
-            android:elevation="50dp"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageButton
+                android:id="@+id/back_button"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_action_back"
+                android:layout_marginLeft="10dp"
+                android:clickable="true"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:visibility="gone"/>
+            <FrameLayout
+                android:id="@+id/plain_text_search"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content">
-
-                <ImageButton
-                    android:id="@+id/back_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/ic_action_back"
-                    android:layout_marginLeft="10dp"
-                    android:clickable="true"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:visibility="gone"/>
                 <EditText
                     android:id="@+id/i_need"
                     android:layout_width="match_parent"
@@ -42,64 +41,67 @@
                     android:maxLines="1"
                     android:padding="15dp"
                     android:singleLine="true" />
-            </LinearLayout>
+                <Button
+                    android:id="@+id/calc_clear_txt_Prise"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_gravity="right|center_vertical"
+                    android:background="@mipmap/ic_delete" />
 
-            <LinearLayout
-                android:id="@+id/breadcrumb"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:orientation="horizontal"
-                android:visibility="gone">
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/ic_action_back"
-                    android:clickable="true"
-                    android:background="?attr/selectableItemBackgroundBorderless"/>
-                <com.devspark.robototextview.widget.RobotoTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Camping"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:textSize="24sp"
-                    android:layout_marginLeft="15dp"
-                    app:typeface="roboto_medium" />
-            </LinearLayout>
-            <!--<LinearLayout-->
-            <!--android:id="@+id/filters_layout"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_margin="20dp"-->
-            <!--android:orientation="horizontal">-->
-            <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:text= "Max price $"/>-->
-            <!--<LinearLayout-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:orientation="horizontal">-->
-            <!--<EditText-->
-            <!--android:id="@+id/max_price_text"-->
-            <!--android:layout_width="100dp"-->
-            <!--android:layout_height="40dp"-->
-            <!--android:textColor="@color/primary_dark_material_dark"-->
-            <!--android:singleLine="true"-->
-            <!--android:layout_gravity="center_horizontal"-->
-            <!--android:gravity="center_horizontal"-->
-            <!--android:inputType="number"-->
-            <!--android:hint="123"-->
-            <!--android:imeOptions="actionGo"/>-->
-            <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:text= ".00"/>-->
-            <!--</LinearLayout>-->
+            </FrameLayout>
 
         </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/breadcrumb"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:orientation="horizontal"
+            android:visibility="gone">
+            <com.devspark.robototextview.widget.RobotoTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Camping"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textSize="24sp"
+                android:layout_marginLeft="15dp"
+                app:typeface="roboto_medium" />
+        </LinearLayout>
+        <!--<LinearLayout-->
+        <!--android:id="@+id/filters_layout"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_margin="20dp"-->
+        <!--android:orientation="horizontal">-->
+        <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:text= "Max price $"/>-->
+        <!--<LinearLayout-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="horizontal">-->
+        <!--<EditText-->
+        <!--android:id="@+id/max_price_text"-->
+        <!--android:layout_width="100dp"-->
+        <!--android:layout_height="40dp"-->
+        <!--android:textColor="@color/primary_dark_material_dark"-->
+        <!--android:singleLine="true"-->
+        <!--android:layout_gravity="center_horizontal"-->
+        <!--android:gravity="center_horizontal"-->
+        <!--android:inputType="number"-->
+        <!--android:hint="123"-->
+        <!--android:imeOptions="actionGo"/>-->
+        <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:text= ".00"/>-->
+        <!--</LinearLayout>-->
+
         <!--<Button-->
         <!--android:id="@+id/save_search"-->
         <!--android:layout_width="match_parent"-->
@@ -128,7 +130,80 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp">
 
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/fashion" />
+
+                <com.devspark.robototextview.widget.RobotoTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentTop="true"
+                    android:background="#80000000"
+                    android:gravity="center"
+                    android:text="Fashion"
+                    android:textAlignment="center"
+                    android:textColor="#FFFFFF"
+                    android:textSize="24sp"
+                    app:typeface="roboto_bold" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/electronics" />
+
+                <com.devspark.robototextview.widget.RobotoTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentTop="true"
+                    android:background="#80000000"
+                    android:gravity="center"
+                    android:text="Electronics"
+                    android:textAlignment="center"
+                    android:textColor="#FFFFFF"
+                    android:textSize="24sp"
+                    app:typeface="roboto_bold" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/home" />
+
+                <com.devspark.robototextview.widget.RobotoTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentTop="true"
+                    android:background="#80000000"
+                    android:gravity="center"
+                    android:text="Home"
+                    android:textAlignment="center"
+                    android:textColor="#FFFFFF"
+                    android:textSize="24sp"
+                    app:typeface="roboto_bold" />
+            </RelativeLayout>
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -188,31 +263,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/electronics" />
-
-                <com.devspark.robototextview.widget.RobotoTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentTop="true"
-                    android:background="#80000000"
-                    android:gravity="center"
-                    android:text="Electronics"
-                    android:textAlignment="center"
-                    android:textColor="#FFFFFF"
-                    android:textSize="24sp"
-                    app:typeface="roboto_bold" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="1dp">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:scaleType="centerCrop"
                     android:src="@drawable/motors" />
 
                 <com.devspark.robototextview.widget.RobotoTextView
@@ -229,56 +279,7 @@
                     app:typeface="roboto_bold" />
             </RelativeLayout>
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="1dp">
 
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/fashion" />
-
-                <com.devspark.robototextview.widget.RobotoTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentTop="true"
-                    android:background="#80000000"
-                    android:gravity="center"
-                    android:text="Fashion"
-                    android:textAlignment="center"
-                    android:textColor="#FFFFFF"
-                    android:textSize="24sp"
-                    app:typeface="roboto_bold" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="1dp">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/home" />
-
-                <com.devspark.robototextview.widget.RobotoTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentTop="true"
-                    android:background="#80000000"
-                    android:gravity="center"
-                    android:text="Home"
-                    android:textAlignment="center"
-                    android:textColor="#FFFFFF"
-                    android:textSize="24sp"
-                    app:typeface="roboto_bold" />
-            </RelativeLayout>
         </LinearLayout>
     </ScrollView>
 

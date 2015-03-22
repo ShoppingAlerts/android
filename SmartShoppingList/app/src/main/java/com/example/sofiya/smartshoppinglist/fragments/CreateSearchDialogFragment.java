@@ -17,12 +17,16 @@ import com.example.sofiya.smartshoppinglist.R;
  */
 public class CreateSearchDialogFragment extends DialogFragment implements TextView.OnEditorActionListener, View.OnClickListener{
     private EditText mEditText;
+
+    private TextView mPrefilledKeywords;
+    private TextView mPrefilledItemTitle;
     private Button mDoneButton;
 
-    public static CreateSearchDialogFragment newInstance(String title) {
+    public static CreateSearchDialogFragment newInstance(String title, String keywords) {
         CreateSearchDialogFragment createSearchDialogFragment = new CreateSearchDialogFragment();
         Bundle args = new Bundle();
         args.putString("title", title);
+        args.putString("prefill", keywords);
         createSearchDialogFragment.setArguments(args);
         return createSearchDialogFragment;
     }
@@ -37,14 +41,66 @@ public class CreateSearchDialogFragment extends DialogFragment implements TextVi
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.compose_dialog, container, false);
         mEditText = (EditText) v.findViewById(R.id.txt_new_content);
+        mPrefilledKeywords = (TextView) v.findViewById(R.id.original_keywords);
+        mPrefilledItemTitle = (TextView) v.findViewById(R.id.original_item_title);
         mDoneButton = (Button) v.findViewById(R.id.done_button);
-        String title = getArguments().getString("title", getResources().getString(R.string.compose_search));
+        String title = getArguments().getString("title", "");
         String prefill = getArguments().getString("prefill", "");
 
-        getDialog().setTitle(title);
-        mEditText.setText(prefill);
-        mEditText.requestFocus();
+        getDialog().setTitle(getResources().getString(R.string.create_alert_for));
+
+        mPrefilledItemTitle.setText(title);
+        mPrefilledItemTitle.setFocusable(true);
+
+        mPrefilledKeywords.setText(prefill);
+        mPrefilledKeywords.setFocusable(true);
+
+        mPrefilledItemTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mEditText.clearFocus();
+                mEditText.setAlpha((float) 0.5);
+                mEditText.setTextColor(getResources().getColor(R.color.fifty_percent_edit_text_dark));
+                v.setFocusable(true);
+                v.setSelected(true);
+                mPrefilledItemTitle.setAlpha(1);
+                mPrefilledKeywords.setAlpha(1);
+                mPrefilledKeywords.setSelected(false);
+            }
+        });
+        mPrefilledKeywords.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mEditText.setAlpha((float) 0.5);
+                mEditText.setTextColor(getResources().getColor(R.color.fifty_percent_edit_text_dark));
+                mEditText.clearFocus();
+                v.setSelected(true);
+                mPrefilledItemTitle.setAlpha(1);
+                mPrefilledKeywords.setAlpha(1);
+                mPrefilledItemTitle.setSelected(false);
+            }
+        });
         mEditText.setOnEditorActionListener(this);
+        mEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    mPrefilledKeywords.setAlpha((float) 0.5);
+                    mPrefilledItemTitle.setAlpha((float) 0.5);
+                    mEditText.setAlpha((float) 1);
+                    mEditText.setTextColor(getResources().getColor(R.color.edit_text_dark));
+//                    mPrefilledKeywords.setEnabled(false);
+//                    mPrefilledItemTitle.setEnabled(false);
+                }
+//                else if (v.equals(mPrefilledItemTitle) || v.equals(mPrefilledKeywords)){
+//                    mPrefilledKeywords.setAlpha((float) 1);
+//                    mPrefilledItemTitle.setAlpha((float) 1);
+//                    mEditText.setAlpha((float)0.8);
+////                    mPrefilledKeywords.setEnabled(true);
+////                    mPrefilledItemTitle.setEnabled(true);
+//                }
+            }
+        });
         mDoneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
