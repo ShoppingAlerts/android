@@ -63,7 +63,7 @@ public class IntroActivity extends FragmentActivity {
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         adapterViewPager = new ShoppingPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapterViewPager);
-
+        getActionBar().hide();
 
         PagerSlidingTabStrip pagerSlidingTabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         pagerSlidingTabStrip.setViewPager(viewPager);
@@ -119,7 +119,7 @@ public class IntroActivity extends FragmentActivity {
     public static class ShoppingPagerAdapter extends FragmentPagerAdapter {
         SparseArray<Fragment> registeredFragments = new SparseArray<Fragment>();
         private static int NUM_ITEMS = 2;
-        private String tabTitles[] = {"SEARCH", "WISHLIST"};
+        private String tabTitles[] = {"SEARCH", "ALERTS"};
 
         public ShoppingPagerAdapter(FragmentManager fragmentManager) {
             super(fragmentManager);

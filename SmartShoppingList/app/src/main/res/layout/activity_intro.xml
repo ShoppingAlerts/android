@@ -10,6 +10,7 @@
         app:pstsShouldExpand="true"
         app:pstsTextAllCaps="true"
         android:layout_width="match_parent"
+        app:typeface="roboto_medium"
         android:textColor="#FFFFFF"
         android:background="@color/primary"
         app:pstsIndicatorColor="@color/accent"

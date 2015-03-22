@@ -6,16 +6,23 @@
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:id="@+id/no_items"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:layout_centerInParent="true">
-
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_no_notifications"
+            android:layout_marginBottom="30dp"/>
         <com.devspark.robototextview.widget.RobotoTextView
-            android:id="@+id/no_items"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="No items yet" />
+            android:textSize="18dp"
+            android:text="No alerts have been set just yet!" />
     </LinearLayout>
 
     <ListView
