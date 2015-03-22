@@ -22,6 +22,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
+                <ImageButton
+                    android:id="@+id/back_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_action_back"
+                    android:layout_marginLeft="10dp"
+                    android:clickable="true"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:visibility="gone"/>
                 <EditText
                     android:id="@+id/i_need"
                     android:layout_width="match_parent"
@@ -47,7 +56,7 @@
                     android:layout_height="match_parent"
                     android:src="@drawable/ic_action_back"
                     android:clickable="true"
-                    android:background="?android:attr/selectableItemBackgroundBorderless"/>
+                    android:background="?attr/selectableItemBackgroundBorderless"/>
                 <com.devspark.robototextview.widget.RobotoTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

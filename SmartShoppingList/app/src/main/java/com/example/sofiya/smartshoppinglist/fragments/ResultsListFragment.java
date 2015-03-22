@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,6 +44,7 @@ public class ResultsListFragment extends Fragment {
     protected SwipeRefreshLayout mSwipeContainer;
     protected View mCategories;
 
+    protected ImageButton mBackButton;
     private String filter;
 
     private static SearchItem sItemToAdd;
@@ -90,6 +92,7 @@ public class ResultsListFragment extends Fragment {
         prepareFilters(v);
         mSwipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
         mCategories = v.findViewById(R.id.categories);
+        mBackButton = (ImageButton) v.findViewById(R.id.back_button);
 //        saveButton = (Button) v.findViewById(R.id.save_search);
         lvResultsList = (ListView) v.findViewById(R.id.lv_results_list);
         lvResultsList.setAdapter(mEbayItemsArrayAdapter);
@@ -144,6 +147,7 @@ public class ResultsListFragment extends Fragment {
                 if (actionId == EditorInfo.IME_ACTION_UNSPECIFIED) {
                     startSearchForKeywords((IntroActivity)getActivity(), keywordsEditText.getText().toString());
                     mSwipeContainer.setVisibility(View.VISIBLE);
+                    mBackButton.setVisibility(View.VISIBLE);
                     return true;
                 }
                 return false;
