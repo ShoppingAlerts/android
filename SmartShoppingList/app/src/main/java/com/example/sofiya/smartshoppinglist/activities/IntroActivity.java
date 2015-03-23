@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -65,7 +66,9 @@ public class IntroActivity extends FragmentActivity {
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         adapterViewPager = new ShoppingPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapterViewPager);
-        getActionBar().hide();
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getActionBar().hide();
+        }
 
         PagerSlidingTabStrip pagerSlidingTabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         pagerSlidingTabStrip.setViewPager(viewPager);

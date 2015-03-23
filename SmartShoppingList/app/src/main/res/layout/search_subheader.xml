@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="70dp"
+    android:layout_height="80dp"
     android:background="#FFFFFF"
     android:focusableInTouchMode="true"
     tools:showIn="@layout/fragment_results_list">
@@ -11,7 +11,7 @@
     <LinearLayout
         android:layout_centerInParent="true"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginBottom="5dp">
 
         <include layout="@layout/back_button" />
@@ -20,7 +20,7 @@
             xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/plain_text_search"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="#FFFFFF"
             android:visibility="visible"
             tools:showIn="@layout/fragment_results_list">
@@ -28,7 +28,7 @@
             <EditText
                 android:id="@+id/i_need"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_margin="10dp"
                 android:hint="@string/search_by_keyword"
                 android:imeActionLabel="Go"

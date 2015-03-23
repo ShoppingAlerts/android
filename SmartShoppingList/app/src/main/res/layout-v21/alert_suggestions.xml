@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:clipToPadding="false"
+    android:padding="20dp"
+    tools:showIn="@layout/compose_dialog">
+
+    <TextView
+        android:id="@+id/original_item_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/prefilled_keyword"
+        android:elevation="10dp"
+        android:clickable="true"
+        android:paddingBottom="6dp"
+        android:paddingLeft="6dp"
+        android:paddingRight="6dp"
+        android:paddingTop="6dp"
+        android:text="item name blah  blah  blah  blah  blah  blah  blah  blah " />
+
+    <TextView
+        android:id="@+id/original_keywords"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/original_item_title"
+        android:background="@drawable/prefilled_keyword"
+        android:clickable="true"
+        android:elevation="10dp"
+        android:padding="6dp"
+        android:text="keywords" />
+
+</RelativeLayout>
