@@ -8,14 +8,14 @@
 
 
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="70dp"
             android:elevation="50dp"
-            android:focusableInTouchMode="true"
-            android:orientation="vertical">
+            android:focusableInTouchMode="true" >
 
             <LinearLayout
+                android:layout_centerInParent="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <ImageButton
@@ -30,7 +30,8 @@
                 <FrameLayout
                     android:id="@+id/plain_text_search"
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:visibility="visible">
                     <EditText
                         android:id="@+id/i_need"
                         android:layout_width="match_parent"
@@ -51,26 +52,22 @@
                         android:background="@mipmap/ic_delete" />
 
                 </FrameLayout>
-
             </LinearLayout>
 
-            <LinearLayout
+            <com.devspark.robototextview.widget.RobotoTextView
                 android:id="@+id/breadcrumb"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
                 android:padding="10dp"
                 android:orientation="horizontal"
-                android:visibility="gone">
-                <com.devspark.robototextview.widget.RobotoTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Camping"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:textSize="24sp"
-                    android:layout_marginLeft="15dp"
-                    app:typeface="roboto_medium" />
-            </LinearLayout>
+                android:visibility="gone"
+                android:text="Sample Breadcrumb"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textSize="24sp"
+                android:layout_marginLeft="15dp"
+                app:typeface="roboto_medium" />
             <!--<LinearLayout-->
             <!--android:id="@+id/filters_layout"-->
             <!--android:layout_width="match_parent"-->
@@ -109,7 +106,7 @@
         <!--android:layout_height="wrap_content"-->
         <!--android:background="@color/primary_dark"-->
         <!--android:text="Save search"/>-->
-    </LinearLayout>
+    </RelativeLayout>
 
     <!--<com.devspark.robototextview.widget.RobotoTextView-->
     <!--android:layout_width="wrap_content"-->
@@ -132,6 +129,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <RelativeLayout
+                android:id="@+id/fashion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="1dp">
@@ -157,6 +155,7 @@
                     app:typeface="roboto_bold" />
             </RelativeLayout>
             <RelativeLayout
+                android:id="@+id/electronics"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="1dp">
@@ -182,6 +181,7 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/home"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="1dp">
@@ -206,6 +206,7 @@
                     app:typeface="roboto_bold" />
             </RelativeLayout>
             <RelativeLayout
+                android:id="@+id/camping"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="1dp">
@@ -231,6 +232,7 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/collectibles"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="1dp">
@@ -256,6 +258,7 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/motors"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="1dp">
@@ -283,7 +286,17 @@
 
         </LinearLayout>
     </ScrollView>
-
+    <LinearLayout
+        android:id="@+id/progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@android:style/Widget.Material.Light.ProgressBar.Large"
+            android:layout_marginRight="5dp" />
+    </LinearLayout>
 
     <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/swipeContainer"

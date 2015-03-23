@@ -20,6 +20,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.devspark.robototextview.widget.RobotoTextView;
 import com.example.sofiya.smartshoppinglist.EbayItemsArrayAdapter;
 import com.example.sofiya.smartshoppinglist.EbayRequests;
 import com.example.sofiya.smartshoppinglist.R;
@@ -44,7 +45,10 @@ public class ResultsListFragment extends Fragment {
     private EditText keywordsEditText, filterEditText;
 //    private Button saveButton;
     protected SwipeRefreshLayout mSwipeContainer;
-    protected View mCategories, mClearEditText;
+    protected View mCategories, mClearEditText, mProgressBar;
+    protected RobotoTextView mBreadCrumb;
+
+    protected View mFashion, mHome, mCollectibles, mMotors, mCamping, mElectronics, mPlainTextSearch;
 
     protected ImageButton mBackButton;
     private String filter;
@@ -52,7 +56,6 @@ public class ResultsListFragment extends Fragment {
     private static SearchItem sItemToAdd;
 
     private boolean addingItem = false;
-    private boolean startup;
     private int mCurrentPage;
 
 
@@ -80,7 +83,7 @@ public class ResultsListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ebayItems = new ArrayList<EbayItem>();
-        startup = true;
+//        startup = true;
 
         mEbayItemsArrayAdapter = new EbayItemsArrayAdapter(getActivity(), ebayItems);
         mCurrentPage = 1;
@@ -100,6 +103,58 @@ public class ResultsListFragment extends Fragment {
         mCategories = v.findViewById(R.id.categories);
         mBackButton = (ImageButton) v.findViewById(R.id.back_button);
         mClearEditText = v.findViewById(R.id.calc_clear_txt_Prise);
+        mBreadCrumb = (RobotoTextView) v.findViewById(R.id.breadcrumb);
+        mPlainTextSearch = v.findViewById(R.id.plain_text_search);
+        mProgressBar = v.findViewById(R.id.progress_bar);
+
+        mFashion = v.findViewById(R.id.fashion);
+        mFashion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startSearchForCategory((IntroActivity) getActivity(), EbayRequests.sFashionCategoryId, "Fashion");
+            }
+        });
+        mCollectibles = v.findViewById(R.id.collectibles);
+        mCollectibles.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startSearchForCategory((IntroActivity) getActivity(), EbayRequests.sCollectiblesCategoryId, "Collectibles");
+
+            }
+        });
+        mCamping = v.findViewById(R.id.camping);
+        mCamping.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startSearchForCategory((IntroActivity) getActivity(), EbayRequests.sCampingCategoryId, "Camping");
+
+            }
+        });
+        mElectronics = v.findViewById(R.id.electronics);
+        mElectronics.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startSearchForCategory((IntroActivity) getActivity(), EbayRequests.sElectronicsCategoryId, "Electronics");
+
+            }
+        });
+        mHome = v.findViewById(R.id.home);
+        mHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startSearchForCategory((IntroActivity) getActivity(), EbayRequests.sHomeCategoryId, "Home");
+
+            }
+        });
+        mMotors = v.findViewById(R.id.motors);
+        mMotors.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startSearchForCategory((IntroActivity) getActivity(), EbayRequests.sMotorsCategoryId, "Motors");
+
+            }
+        });
+
         final Animation enterAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.enter);
         final Animation leaveAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.leave);
 
@@ -117,6 +172,8 @@ public class ResultsListFragment extends Fragment {
                 mSwipeContainer.startAnimation(leaveAnimation);
                 mSwipeContainer.setVisibility(View.GONE);
                 mBackButton.setVisibility(View.GONE);
+                mBreadCrumb.setVisibility(View.GONE);
+                mPlainTextSearch.setVisibility(View.VISIBLE);
             }
         });
 //        saveButton = (Button) v.findViewById(R.id.save_search);
@@ -199,7 +256,7 @@ public class ResultsListFragment extends Fragment {
     }
 
     public void makeRequest(final int offset, final String searchKeywords) {
-        Log.i("debug", "making request with keywords "+ searchKeywords + " because startup is " +startup);
+//        Log.i("debug", "making request with keywords "+ searchKeywords + " because startup is " +startup);
         mEbayItemsArrayAdapter.clear();
         mCurrentPage = offset;
 
@@ -221,6 +278,7 @@ public class ResultsListFragment extends Fragment {
 
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    mProgressBar.setVisibility(View.GONE);
                     Log.d("DEBUG", response.toString());
                     JSONArray ebayItemsResult;
                     try {
@@ -283,6 +341,7 @@ public class ResultsListFragment extends Fragment {
         if (mCategories != null) {
             mCategories.setVisibility(View.GONE);
         }
+        mProgressBar.setVisibility(View.VISIBLE);
         FragmentPagerAdapter fragmentPagerAdapter = context.getAdapterViewPager();
         for (int i = 0; i < fragmentPagerAdapter.getCount(); i++) {
             String name = makeFragmentName(context.getViewPager().getId(), i);
@@ -297,22 +356,45 @@ public class ResultsListFragment extends Fragment {
         }
     }
 
-    public void startSearchForKeywords(IntroActivity context, String searchKeywords, String filter) {
-        mSwipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-
-                mEbayItemsArrayAdapter.clear();
-                if (startup || keywords != null) {
-                    makeRequest(0, keywords);
-                    startup = false;
+    public void startSearchForCategory(IntroActivity context, String categoryId, String categoryText) {
+        if (mCategories != null) {
+            mCategories.setVisibility(View.GONE);
+        }
+        mProgressBar.setVisibility(View.VISIBLE);
+        FragmentPagerAdapter fragmentPagerAdapter = context.getAdapterViewPager();
+        for (int i = 0; i < fragmentPagerAdapter.getCount(); i++) {
+            String name = makeFragmentName(context.getViewPager().getId(), i);
+            Fragment viewPagerFragment = context.getSupportFragmentManager().findFragmentByTag(name);
+            if (viewPagerFragment != null) {
+                if (viewPagerFragment instanceof ResultsListFragment && viewPagerFragment.isResumed()) {
+                    this.addingItem = true;
+                    ((ResultsListFragment) viewPagerFragment).makeRequestByCategory(0, categoryId);
+                    mSwipeContainer.setVisibility(View.VISIBLE);
+                    mPlainTextSearch.setVisibility(View.GONE);
+                    mBackButton.setVisibility(View.VISIBLE);
+                    mBreadCrumb.setVisibility(View.VISIBLE);
+                    mBreadCrumb.setText(categoryText);
                 }
             }
-        });
-        if (startup || keywords!=null){
-            makeRequest(0, keywords);
-            startup = false;
         }
+    }
+
+    public void startSearchForKeywords(IntroActivity context, String searchKeywords, String filter) {
+//        mSwipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//
+//                mEbayItemsArrayAdapter.clear();
+//                if (startup || keywords != null) {
+//                    makeRequest(0, keywords);
+//                    startup = false;
+//                }
+//            }
+//        });
+//        if (startup || keywords!=null){
+//            makeRequest(0, keywords);
+//            startup = false;
+//        }
         FragmentPagerAdapter fragmentPagerAdapter = context.getAdapterViewPager();
         for (int i = 0; i < fragmentPagerAdapter.getCount(); i++) {
             String name = makeFragmentName(context.getViewPager().getId(), i);
@@ -329,6 +411,89 @@ public class ResultsListFragment extends Fragment {
 
     private static String makeFragmentName(int viewId, int position) {
         return "android:switcher:" + viewId + ":" + position;
+    }
+
+
+
+    public void makeRequestByCategory(final int offset, final String categoryId) {
+//        Log.i("debug", "making request with keywords "+ categoryId + " because startup is " +startup);
+        mEbayItemsArrayAdapter.clear();
+        mCurrentPage = offset;
+
+        mPaginatedUrl = EbayRequests.sSearchByCategoryUrl.concat(categoryId + EbayRequests.sPageNumberUrl + 1 + EbayRequests.sPaginationUrl + 10);
+        if (filter != null) {
+            mEbayItemsArrayAdapter.setPriceFilter(filter);
+            mPaginatedUrl = mPaginatedUrl.concat("&itemFilter(0).name=MaxPrice&itemFilter(0).value=" + filter + "&itemFilter(0).paramName=Currency&itemFilter(0).paramValue=USD&sortOrder=PricePlusShippingLowest");
+        }
+        Log.i("INFO", "searchUrl is " + mPaginatedUrl);
+        AsyncHttpClient asyncHttpClient = new AsyncHttpClient();
+        if (((IntroActivity)getActivity()).isNetworkAvailable()){
+
+            asyncHttpClient.get(mPaginatedUrl, new JsonHttpResponseHandler() {
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    Log.i("Debug", "error is "+ errorResponse);
+                    super.onFailure(statusCode, headers, throwable, errorResponse);
+                }
+
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    Log.d("DEBUG", response.toString());
+                    JSONArray ebayItemsResult;
+                    try {
+                        ebayItemsResult = response.getJSONArray("findItemsByCategoryResponse").getJSONObject(0).getJSONArray("searchResult").getJSONObject(0).getJSONArray("item");
+//                        if (mCurrentPage == 0) {
+//                            imageResults.clear();
+//                        }
+                        if (addingItem) {
+                            EbayItem bestPriceItem = null;
+                            for (int i = 0; i< ebayItemsResult.length(); i++) {
+                                if (EbayItem.fromJsonArray(ebayItemsResult).get(i).getUrl() != null) {
+                                    bestPriceItem = EbayItem.fromJsonArray(ebayItemsResult).get(i);
+                                    break;
+                                }
+                            }
+
+                            if (bestPriceItem != null) {
+                                sBestPrice = String.valueOf(bestPriceItem.getPrice());
+                                sBestPriceUrl = bestPriceItem.getUrl();
+
+//                            sItemToAdd = new SearchItem(keywordsEditText.getText().toString(), filterEditText.getText().toString(), "", "");
+//                            if (sItemToAdd != null) {
+//                                sItemToAdd.setBestPrice(sBestPrice);
+//                                sItemToAdd.setBestPriceUrl(sBestPriceUrl);
+//                                persistSearch(sItemToAdd);
+//                            }
+//                            ((IntroActivity) getActivity()).getmShoppingListFragment().retrieveSearchesFromDB();
+//                            ((IntroActivity) getActivity()).getViewPager().setCurrentItem(1);
+                                addingItem = false;
+                            }
+                            else {
+                                Toast.makeText(getActivity(), "No results for these keywords", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                        mProgressBar.setVisibility(View.GONE);
+                        mEbayItemsArrayAdapter.addAll(EbayItem.fromJsonArray(ebayItemsResult));
+                        if (mEbayItemsArrayAdapter.isEmpty()) {
+
+//                            getView().findViewById(R.id.no_results).setVisibility(View.VISIBLE);
+//                            gvResults.setVisibility(View.GONE);
+                        } else {
+//                            findViewById(R.id.no_results).setVisibility(View.GONE);
+//                            gvResults.setVisibility(View.VISIBLE);
+                            mSwipeContainer.setRefreshing(false);
+                        }
+                    } catch (JSONException e) {
+                        Toast.makeText(getActivity(), "Network problem with fetching the data", Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                    }
+//                    Log.i("INFO", imageResults.toString());
+                }
+            });
+        }
+        else {
+            Toast.makeText(getActivity(), "No network connectivity", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public String getFilter() {
