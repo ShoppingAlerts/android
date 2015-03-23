@@ -53,7 +53,7 @@ public class ResultsListFragment extends Fragment {
     protected ImageButton mBackButton;
     private String filter;
 
-    private static SearchItem sItemToAdd;
+    public static SearchItem sItemToAdd;
 
     private boolean addingItem = false;
     private int mCurrentPage;
@@ -299,15 +299,6 @@ public class ResultsListFragment extends Fragment {
                             if (bestPriceItem != null) {
                             sBestPrice = String.valueOf(bestPriceItem.getPrice());
                             sBestPriceUrl = bestPriceItem.getUrl();
-
-//                            sItemToAdd = new SearchItem(keywordsEditText.getText().toString(), filterEditText.getText().toString(), "", "");
-//                            if (sItemToAdd != null) {
-//                                sItemToAdd.setBestPrice(sBestPrice);
-//                                sItemToAdd.setBestPriceUrl(sBestPriceUrl);
-//                                persistSearch(sItemToAdd);
-//                            }
-//                            ((IntroActivity) getActivity()).getmShoppingListFragment().retrieveSearchesFromDB();
-//                            ((IntroActivity) getActivity()).getViewPager().setCurrentItem(1);
                             addingItem = false;
                             }
                             else {

@@ -13,14 +13,19 @@ import android.widget.Toast;
 
 import com.example.sofiya.smartshoppinglist.R;
 import com.example.sofiya.smartshoppinglist.activities.IntroActivity;
+import com.example.sofiya.smartshoppinglist.models.SearchItem;
+
+import static com.example.sofiya.smartshoppinglist.activities.IntroActivity.persistSearch;
 
 /**
  * Created by sofiya on 3/13/15.
  */
 public class CreateSearchDialogFragment extends DialogFragment implements TextView.OnEditorActionListener, View.OnClickListener{
     private EditText mEditText;
+    private EditText mMaxPriceEditText;
 
     private String mAlertKeywords;
+    private String maxPrice;
     private boolean isCustomSearch;
 
     private TextView mPrefilledKeywords;
@@ -49,6 +54,7 @@ public class CreateSearchDialogFragment extends DialogFragment implements TextVi
         mPrefilledKeywords = (TextView) v.findViewById(R.id.original_keywords);
         mPrefilledItemTitle = (TextView) v.findViewById(R.id.original_item_title);
         mDoneButton = (Button) v.findViewById(R.id.done_button);
+        mMaxPriceEditText = (EditText) v.findViewById(R.id.max_price_text);
         String title = getArguments().getString("title", "");
         String prefill = getArguments().getString("prefill", "");
 
@@ -76,6 +82,8 @@ public class CreateSearchDialogFragment extends DialogFragment implements TextVi
             mPrefilledKeywords.setVisibility(View.GONE);
         }
 
+
+
         mPrefilledItemTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,6 +92,16 @@ public class CreateSearchDialogFragment extends DialogFragment implements TextVi
                 enablePrefills();
                 v.setSelected(true);
                 mPrefilledKeywords.setSelected(false);
+            }
+        });
+
+        mMaxPriceEditText.setOnEditorActionListener(this);
+        mMaxPriceEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    maxPrice = mMaxPriceEditText.getText().toString();
+                }
             }
         });
 
@@ -109,12 +127,27 @@ public class CreateSearchDialogFragment extends DialogFragment implements TextVi
             @Override
             public void onClick(View v) {
                 mEditText.clearFocus();
+                mMaxPriceEditText.clearFocus();
                 if (mAlertKeywords == null || mAlertKeywords.equals("")) {
                     Toast.makeText(getActivity(), "Please set a keyword", Toast.LENGTH_SHORT).show();
                 }
+                else if (maxPrice == null || maxPrice.equals("")) {
+                    Toast.makeText(getActivity(), "Please pick a max price", Toast.LENGTH_SHORT).show();
+                    mMaxPriceEditText.requestFocus();
+                }
+                else {
                 Toast.makeText(getActivity(), mAlertKeywords, Toast.LENGTH_SHORT).show();
-
+                ((IntroActivity)getActivity()).getmResultsListFragment().sItemToAdd = new SearchItem(mAlertKeywords, maxPrice, "", "");
+                            if (((IntroActivity)getActivity()).getmResultsListFragment().sItemToAdd != null) {
+//                                ((IntroActivity)getActivity()).getmResultsListFragment().sItemToAdd.setBestPrice(sBestPrice);
+//                                ((IntroActivity)getActivity()).getmResultsListFragment().sItemToAdd.setBestPriceUrl(sBestPriceUrl);
+                                persistSearch(((IntroActivity)getActivity()).getmResultsListFragment().sItemToAdd);
+                            }
+                            ((IntroActivity) getActivity()).getmShoppingListFragment().retrieveSearchesFromDB();
+                            ((IntroActivity) getActivity()).getViewPager().setCurrentItem(1);
 //                applyContentChanges();
+                    dismiss();
+            }
             }
         });
 
