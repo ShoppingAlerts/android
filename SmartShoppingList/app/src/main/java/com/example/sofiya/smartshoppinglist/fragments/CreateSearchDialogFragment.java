@@ -58,8 +58,23 @@ public class CreateSearchDialogFragment extends DialogFragment implements TextVi
         mPrefilledItemTitle.setFocusable(true);
         mDoneButton.setFocusable(true);
 
-        mPrefilledKeywords.setText(prefill);
-        mPrefilledKeywords.setFocusable(true);
+        if (!prefill.equals("")) {
+            mPrefilledKeywords.setText(prefill);
+            mPrefilledKeywords.setFocusable(true);
+
+            mPrefilledKeywords.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    isCustomSearch = false;
+                    mAlertKeywords = mPrefilledKeywords.getText().toString();
+                    enablePrefills();
+                    v.setSelected(true);
+                    mPrefilledItemTitle.setSelected(false);
+                }
+            });
+        } else {
+            mPrefilledKeywords.setVisibility(View.GONE);
+        }
 
         mPrefilledItemTitle.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,16 +86,7 @@ public class CreateSearchDialogFragment extends DialogFragment implements TextVi
                 mPrefilledKeywords.setSelected(false);
             }
         });
-        mPrefilledKeywords.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isCustomSearch = false;
-                mAlertKeywords = mPrefilledKeywords.getText().toString();
-                enablePrefills();
-                v.setSelected(true);
-                mPrefilledItemTitle.setSelected(false);
-            }
-        });
+
         mEditText.setOnEditorActionListener(this);
         mEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -103,7 +109,7 @@ public class CreateSearchDialogFragment extends DialogFragment implements TextVi
             @Override
             public void onClick(View v) {
                 mEditText.clearFocus();
-                if (mAlertKeywords == null) {
+                if (mAlertKeywords == null || mAlertKeywords.equals("")) {
                     Toast.makeText(getActivity(), "Please set a keyword", Toast.LENGTH_SHORT).show();
                 }
                 Toast.makeText(getActivity(), mAlertKeywords, Toast.LENGTH_SHORT).show();

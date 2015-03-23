@@ -6,7 +6,7 @@
     <string name="action_settings">Settings</string>
     <string name="compose_search">Compose search</string>
     <string name="create_alert_for">Create alert for:</string>
-    <string name="search_by_keyword">Search by keywords</string>
+    <string name="search_by_keyword">Search for keywords</string>
     <string name="browse_items">Browse categories</string>
     <string name="edit_empty_string_error">Please enter text</string>
     <string name="profile">Profile</string>

@@ -162,6 +162,7 @@ public class ResultsListFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 keywordsEditText.setText("");
+                keywords = "";
             }
         });
         mBackButton.setOnClickListener(new View.OnClickListener() {
@@ -360,6 +361,8 @@ public class ResultsListFragment extends Fragment {
         if (mCategories != null) {
             mCategories.setVisibility(View.GONE);
         }
+        keywordsEditText.setText("");
+        keywords = "";
         mProgressBar.setVisibility(View.VISIBLE);
         FragmentPagerAdapter fragmentPagerAdapter = context.getAdapterViewPager();
         for (int i = 0; i < fragmentPagerAdapter.getCount(); i++) {
