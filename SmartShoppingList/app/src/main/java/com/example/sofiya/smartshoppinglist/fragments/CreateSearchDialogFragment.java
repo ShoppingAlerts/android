@@ -137,7 +137,7 @@ public class CreateSearchDialogFragment extends DialogFragment implements TextVi
                 }
                 else {
                 Toast.makeText(getActivity(), mAlertKeywords, Toast.LENGTH_SHORT).show();
-                ((IntroActivity)getActivity()).getmResultsListFragment().sItemToAdd = new SearchItem(mAlertKeywords, maxPrice, "", "");
+                ((IntroActivity)getActivity()).getmResultsListFragment().sItemToAdd = new SearchItem(mAlertKeywords, maxPrice, ((IntroActivity)getActivity()).getmResultsListFragment().sBestPrice, ((IntroActivity)getActivity()).getmResultsListFragment().sBestPriceUrl);
                             if (((IntroActivity)getActivity()).getmResultsListFragment().sItemToAdd != null) {
 //                                ((IntroActivity)getActivity()).getmResultsListFragment().sItemToAdd.setBestPrice(sBestPrice);
 //                                ((IntroActivity)getActivity()).getmResultsListFragment().sItemToAdd.setBestPriceUrl(sBestPriceUrl);

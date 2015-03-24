@@ -64,8 +64,8 @@ public class ResultsListFragment extends Fragment {
     private String keywords;
     private String mPaginatedUrl;
 
-    private static String sBestPrice;
-    private static String sBestPriceUrl;
+    public static String sBestPrice;
+    public static String sBestPriceUrl;
     private String title;
     private int page;
 
