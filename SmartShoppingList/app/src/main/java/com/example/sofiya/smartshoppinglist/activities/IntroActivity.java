@@ -1,5 +1,6 @@
 package com.example.sofiya.smartshoppinglist.activities;
 
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -23,6 +24,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.astuetz.PagerSlidingTabStrip;
+import com.example.sofiya.smartshoppinglist.ShoppingAlarmReceiver;
 import com.example.sofiya.smartshoppinglist.R;
 import com.example.sofiya.smartshoppinglist.fragments.ResultsListFragment;
 import com.example.sofiya.smartshoppinglist.fragments.ShoppingListFragment;
@@ -34,7 +36,8 @@ public class IntroActivity extends FragmentActivity {
 
     FragmentPagerAdapter adapterViewPager;
 
-
+//    public static final int searchInterval = 86400000;     // 24h in milliseconds
+    public static final int searchInterval = 5000;
 
     ViewPager viewPager;
 
@@ -67,11 +70,24 @@ public class IntroActivity extends FragmentActivity {
         pagerSlidingTabStrip.setViewPager(viewPager);
         mResultsListFragment = new ResultsListFragment();
         mShoppingListFragment = new ShoppingListFragment();
+        startAlarmService();
 //        Bundle args = new Bundle();
 //        if (getIntent().hasExtra("shoppingitem")) {
 //            args.putString("shoppingitem", getIntent().getExtras().get("shoppingitem").toString());
 //            mShoppingListFragment.setArguments(args);
 //        }
+    }
+    // Create the Handler object
+    public void startAlarmService(){
+        // Construct an intent that will execute the AlarmReceiver
+        Intent intent = new Intent(getApplicationContext(), ShoppingAlarmReceiver.class);
+        // Create a PendingIntent to be triggered when the alarm goes off
+        final PendingIntent pIntent = PendingIntent.getBroadcast(this, ShoppingAlarmReceiver.REQUEST_CODE,
+                intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        // Setup periodic alarm every 5 seconds
+        long firstMillis = System.currentTimeMillis(); // first run of alarm is immediate
+        AlarmManager alarm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+        alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis, searchInterval, pIntent);
     }
 
     public void createNotification(int nId, int iconRes, String title, String body, String url) {

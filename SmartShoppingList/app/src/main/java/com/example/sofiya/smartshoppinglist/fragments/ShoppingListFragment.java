@@ -2,6 +2,7 @@ package com.example.sofiya.smartshoppinglist.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,9 @@ import com.example.sofiya.smartshoppinglist.SearchItemsArrayAdapter;
 import com.example.sofiya.smartshoppinglist.SwipeDismissListViewTouchListener;
 import com.example.sofiya.smartshoppinglist.activities.IntroActivity;
 import com.example.sofiya.smartshoppinglist.models.SearchItem;
+import com.nhaarman.listviewanimations.itemmanipulation.DynamicListView;
+import com.nhaarman.listviewanimations.itemmanipulation.dragdrop.TouchViewDraggableManager;
+import com.nhaarman.listviewanimations.itemmanipulation.swipedismiss.OnDismissCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +32,7 @@ public class ShoppingListFragment extends Fragment {
     private View mNoItemsYet;
 
     protected SearchItemsArrayAdapter mSearchItemsArrayAdapter;
-    private ListView searchItemsListView;
+    private DynamicListView searchItemsListView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,7 +51,7 @@ public class ShoppingListFragment extends Fragment {
         mSearchItemsArrayAdapter =
                 new SearchItemsArrayAdapter(getActivity(), android.R.layout.simple_list_item_1);
 
-        searchItemsListView = (ListView) view.findViewById(R.id.lv_shopping_list);
+        searchItemsListView = (DynamicListView) view.findViewById(R.id.lv_shopping_list);
 
         mNoItemsYet = view.findViewById(R.id.no_items);
         searchItemsListView.setAdapter(mSearchItemsArrayAdapter);
@@ -112,7 +116,9 @@ public class ShoppingListFragment extends Fragment {
     public void retrieveSearchesFromDB() {
         if (SearchItem.exists()) {
             List<SearchItem> allSearchModels = SearchItem.listAll(SearchItem.class);
-            mSearchItemsArrayAdapter.clear();
+            if (mSearchItemsArrayAdapter != null) {
+                mSearchItemsArrayAdapter.clear();
+            }
 
             for (SearchItem searchModel1 : allSearchModels) {
                 mSearchItemsArrayAdapter.add(searchModel1);

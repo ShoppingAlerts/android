@@ -25,7 +25,7 @@
             android:text="No alerts have been set just yet!" />
     </LinearLayout>
 
-    <ListView
+    <com.nhaarman.listviewanimations.itemmanipulation.DynamicListView
         android:id="@+id/lv_shopping_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
