@@ -54,7 +54,7 @@ public class EbayItemsArrayAdapter extends ArrayAdapter<EbayItem> {
         alertButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showComposeDialog(ebayItem.getTitle(), ((IntroActivity)getContext()).getmResultsListFragment().getKeywords());
+                showComposeDialog((IntroActivity)getContext(), ebayItem.getTitle(), ((IntroActivity)getContext()).getmResultsListFragment().getKeywords());
             }
         });
         shopButton.setOnClickListener(new View.OnClickListener() {
@@ -68,9 +68,9 @@ public class EbayItemsArrayAdapter extends ArrayAdapter<EbayItem> {
         return convertView;
     }
 
-    private void showComposeDialog(String title, String keywords) {
+    public static void showComposeDialog(IntroActivity context, String title, String keywords) {
         CreateSearchDialogFragment mComposeDialog = CreateSearchDialogFragment.newInstance(title, keywords);
-        mComposeDialog.show(((IntroActivity)getContext()).getSupportFragmentManager(), "fragment_compose_search"); }
+        mComposeDialog.show((context).getSupportFragmentManager(), "fragment_compose_search"); }
 //    @Override
 //    public EbayItem onCreateViewHolder(ViewGroup parent, int viewType) {
 //        return null;

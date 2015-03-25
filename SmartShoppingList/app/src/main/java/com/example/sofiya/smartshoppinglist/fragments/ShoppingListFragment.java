@@ -2,7 +2,6 @@ package com.example.sofiya.smartshoppinglist.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,12 +11,7 @@ import android.widget.ListView;
 
 import com.example.sofiya.smartshoppinglist.R;
 import com.example.sofiya.smartshoppinglist.SearchItemsArrayAdapter;
-import com.example.sofiya.smartshoppinglist.SwipeDismissListViewTouchListener;
-import com.example.sofiya.smartshoppinglist.activities.IntroActivity;
 import com.example.sofiya.smartshoppinglist.models.SearchItem;
-import com.nhaarman.listviewanimations.itemmanipulation.DynamicListView;
-import com.nhaarman.listviewanimations.itemmanipulation.dragdrop.TouchViewDraggableManager;
-import com.nhaarman.listviewanimations.itemmanipulation.swipedismiss.OnDismissCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +26,7 @@ public class ShoppingListFragment extends Fragment {
     private View mNoItemsYet;
 
     protected SearchItemsArrayAdapter mSearchItemsArrayAdapter;
-    private DynamicListView searchItemsListView;
+    private ListView searchItemsListView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,30 +45,38 @@ public class ShoppingListFragment extends Fragment {
         mSearchItemsArrayAdapter =
                 new SearchItemsArrayAdapter(getActivity(), android.R.layout.simple_list_item_1);
 
-        searchItemsListView = (DynamicListView) view.findViewById(R.id.lv_shopping_list);
+        searchItemsListView = (ListView) view.findViewById(R.id.lv_shopping_list);
 
         mNoItemsYet = view.findViewById(R.id.no_items);
         searchItemsListView.setAdapter(mSearchItemsArrayAdapter);
 
-        SwipeDismissListViewTouchListener touchListener =
-                new SwipeDismissListViewTouchListener(
-                        searchItemsListView,
-                        new SwipeDismissListViewTouchListener.DismissCallbacks() {
-                            @Override
-                            public boolean canDismiss(int position) {
-                                return true;
-                            }
-
-                            @Override
-                            public void onDismiss(ListView listView, int[] reverseSortedPositions) {
-                                for (int position : reverseSortedPositions) {
-                                    mSearchItemsArrayAdapter.remove(mSearchItemsArrayAdapter.getItem(position));
-                                    ((IntroActivity)getActivity()).deleteSearch(mSearchItemsArrayAdapter.getItem(position));
-                                }
-                                mSearchItemsArrayAdapter.notifyDataSetChanged();
-                            }
-                        });
-        searchItemsListView.setOnTouchListener(touchListener);
+//        searchItemsListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+//            @Override
+//            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+//                Log.i("debug","long press, everybody!");
+//                EbayItemsArrayAdapter.showComposeDialog(((IntroActivity) getActivity()), "Edit alert", ((SearchItem) searchItemsListView.getItemAtPosition(position)).getSearchKeywords());
+//                return true;
+//            }
+//        });
+//        SwipeDismissListViewTouchListener touchListener =
+//                new SwipeDismissListViewTouchListener(
+//                        searchItemsListView,
+//                        new SwipeDismissListViewTouchListener.DismissCallbacks() {
+//                            @Override
+//                            public boolean canDismiss(int position) {
+//                                return true;
+//                            }
+//
+//                            @Override
+//                            public void onDismiss(ListView listView, int[] reverseSortedPositions) {
+//                                for (int position : reverseSortedPositions) {
+//                                    mSearchItemsArrayAdapter.remove(mSearchItemsArrayAdapter.getItem(position));
+//                                    ((IntroActivity)getActivity()).deleteSearch(mSearchItemsArrayAdapter.getItem(position));
+//                                }
+//                                mSearchItemsArrayAdapter.notifyDataSetChanged();
+//                            }
+//                        });
+//        searchItemsListView.setOnTouchListener(touchListener);
 //        if (getArguments() != null) {
 //            SearchItem itemToAdd = new SearchItem(getArguments().getString("shoppingitem").toString());
 //            mSearchItemsArrayAdapter.add(itemToAdd);
@@ -118,12 +120,13 @@ public class ShoppingListFragment extends Fragment {
             List<SearchItem> allSearchModels = SearchItem.listAll(SearchItem.class);
             if (mSearchItemsArrayAdapter != null) {
                 mSearchItemsArrayAdapter.clear();
+                for (SearchItem searchModel1 : allSearchModels) {
+                    mSearchItemsArrayAdapter.add(searchModel1);
+                    Log.i("DEBUG", "keyword is " + searchModel1.getSearchKeywords());
+                }
             }
 
-            for (SearchItem searchModel1 : allSearchModels) {
-                mSearchItemsArrayAdapter.add(searchModel1);
-                Log.i("DEBUG", "keyword is " + searchModel1.getSearchKeywords());
-            }
+
             if (!allSearchModels.isEmpty()) {
                 mNoItemsYet.setVisibility(View.GONE);
             }

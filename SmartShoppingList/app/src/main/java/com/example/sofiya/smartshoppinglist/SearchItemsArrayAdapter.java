@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.sofiya.smartshoppinglist.activities.IntroActivity;
@@ -27,6 +28,7 @@ public class SearchItemsArrayAdapter extends ArrayAdapter<SearchItem> {
         TextView wantPriceTextView = (TextView) convertView.findViewById(R.id.want_price);
         TextView bestPriceTextView = (TextView) convertView.findViewById(R.id.best_price_value);
         TextView bestPriceLabel = (TextView) convertView.findViewById(R.id.best_price_text);
+        ImageButton editButton = (ImageButton) convertView.findViewById(R.id.edit);
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -35,6 +37,12 @@ public class SearchItemsArrayAdapter extends ArrayAdapter<SearchItem> {
                     i.setData(Uri.parse(searchItem.getBestPriceUrl()));
                     getContext().startActivity(i);
                 }
+            }
+        });
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EbayItemsArrayAdapter.showComposeDialog(((IntroActivity) getContext()), "Edit alert", searchItem.getSearchKeywords());
             }
         });
         if (searchItem.getSearchKeywords() != null) {
