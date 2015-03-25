@@ -50,6 +50,13 @@
                 android:paddingRight="5dp" />
         </LinearLayout>
     </LinearLayout>
+    <ImageButton
+        android:id="@+id/delete"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:background="@android:drawable/screen_background_light_transparent"
+        android:src="@drawable/ic_delete" />
     <!--<ImageButton-->
         <!--android:id="@+id/edit"-->
         <!--android:layout_width="0dp"-->

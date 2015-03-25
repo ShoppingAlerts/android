@@ -29,6 +29,7 @@ public class SearchItemsArrayAdapter extends ArrayAdapter<SearchItem> {
         TextView bestPriceTextView = (TextView) convertView.findViewById(R.id.best_price_value);
         TextView bestPriceLabel = (TextView) convertView.findViewById(R.id.best_price_text);
         ImageButton editButton = (ImageButton) convertView.findViewById(R.id.edit);
+        ImageButton deleteButton = (ImageButton) convertView.findViewById(R.id.delete);
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -43,6 +44,21 @@ public class SearchItemsArrayAdapter extends ArrayAdapter<SearchItem> {
             @Override
             public void onClick(View v) {
                 EbayItemsArrayAdapter.showComposeDialog(((IntroActivity) getContext()), "Edit alert", searchItem.getSearchKeywords());
+            }
+        });
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                long idToDelete = searchItem.getId();
+                SearchItemsArrayAdapter.this.remove(searchItem); //.notifyDataSetChanged();
+                SearchItem searchItemToDelete = SearchItem.findById(SearchItem.class, idToDelete);
+                searchItemToDelete.delete();
+                if (SearchItemsArrayAdapter.this.isEmpty()) {
+                    View noItemsLeft = ((IntroActivity)getContext()).findViewById(R.id.no_items);
+                    if (noItemsLeft != null) {
+                        noItemsLeft.setVisibility(View.VISIBLE);
+                    }
+                }
             }
         });
         if (searchItem.getSearchKeywords() != null) {
