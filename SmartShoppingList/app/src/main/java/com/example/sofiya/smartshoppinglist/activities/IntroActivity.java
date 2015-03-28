@@ -1,21 +1,14 @@
 package com.example.sofiya.smartshoppinglist.activities;
 
-import android.app.AlarmManager;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.util.SparseArray;
@@ -24,8 +17,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.astuetz.PagerSlidingTabStrip;
-import com.example.sofiya.smartshoppinglist.ShoppingAlarmReceiver;
 import com.example.sofiya.smartshoppinglist.R;
+import com.example.sofiya.smartshoppinglist.ShoppingAlarmReceiver;
 import com.example.sofiya.smartshoppinglist.fragments.ResultsListFragment;
 import com.example.sofiya.smartshoppinglist.fragments.ShoppingListFragment;
 import com.example.sofiya.smartshoppinglist.models.SearchItem;
@@ -36,10 +29,9 @@ public class IntroActivity extends FragmentActivity {
 
     FragmentPagerAdapter adapterViewPager;
 
-//    public static final int searchInterval = 86400000;     // 24h in milliseconds
-    public static final int searchInterval = 5000;
-
     ViewPager viewPager;
+
+    ShoppingAlarmReceiver alarm = new ShoppingAlarmReceiver();
 
     public static ShoppingListFragment getmShoppingListFragment() {
         return mShoppingListFragment;
@@ -62,6 +54,7 @@ public class IntroActivity extends FragmentActivity {
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         adapterViewPager = new ShoppingPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapterViewPager);
+        alarm.setAlarm(this);
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getActionBar().hide();
         }
@@ -70,56 +63,7 @@ public class IntroActivity extends FragmentActivity {
         pagerSlidingTabStrip.setViewPager(viewPager);
         mResultsListFragment = new ResultsListFragment();
         mShoppingListFragment = new ShoppingListFragment();
-        startAlarmService();
-//        Bundle args = new Bundle();
-//        if (getIntent().hasExtra("shoppingitem")) {
-//            args.putString("shoppingitem", getIntent().getExtras().get("shoppingitem").toString());
-//            mShoppingListFragment.setArguments(args);
-//        }
     }
-    // Create the Handler object
-    public void startAlarmService(){
-        // Construct an intent that will execute the AlarmReceiver
-        Intent intent = new Intent(getApplicationContext(), ShoppingAlarmReceiver.class);
-        // Create a PendingIntent to be triggered when the alarm goes off
-        final PendingIntent pIntent = PendingIntent.getBroadcast(this, ShoppingAlarmReceiver.REQUEST_CODE,
-                intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        // Setup periodic alarm every 5 seconds
-        long firstMillis = System.currentTimeMillis(); // first run of alarm is immediate
-        AlarmManager alarm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-        alarm.setInexactRepeating(AlarmManager.RTC_WAKEUP, firstMillis, searchInterval, pIntent);
-    }
-
-    public void createNotification(int nId, int iconRes, String title, String body, String url) {
-        Intent intent = new Intent(this, IntroActivity.class);
-// Next, let's turn this into a PendingIntent using
-//   public static PendingIntent getActivity(Context context, int requestCode,
-//       Intent intent, int flags)
-        int flags = PendingIntent.FLAG_CANCEL_CURRENT; // cancel old intent and create new one
-
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-        PendingIntent pendingBrowserIntent = PendingIntent.getActivity(this, nId, browserIntent, flags);
-
-        int requestID = (int) System.currentTimeMillis(); //unique requestID to differentiate between various notification with same NotifId
-        PendingIntent pIntent = PendingIntent.getActivity(this, nId, intent, flags);
-        Notification noti =
-                new NotificationCompat.Builder(this)
-                        .setSmallIcon(iconRes)
-                        .setContentTitle(title)
-                        .setContentText(body)
-                        .setContentIntent(pIntent)
-                        .addAction(0, "Shop", pendingBrowserIntent)
-                        .addAction(0, "Edit searches", pIntent).build();
-
-// Hide the notification after its selected
-//        noti.setAutoCancel(true);
-
-        NotificationManager mNotificationManager =
-                (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-// mId allows you to update the notification later on.
-        mNotificationManager.notify(0, noti);
-    }
-
 
     public static void persistSearch(SearchItem itemToAdd) {
         SearchItem searchItem = new SearchItem(itemToAdd.getSearchKeywords(), itemToAdd.getWantPrice(), itemToAdd.getBestPrice(), itemToAdd.getBestPriceUrl()); // Todo unhardcode alerts from false

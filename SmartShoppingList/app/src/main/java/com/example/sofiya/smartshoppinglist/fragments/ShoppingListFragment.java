@@ -50,58 +50,12 @@ public class ShoppingListFragment extends Fragment {
         mNoItemsYet = view.findViewById(R.id.no_items);
         searchItemsListView.setAdapter(mSearchItemsArrayAdapter);
 
-//        searchItemsListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-//            @Override
-//            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-//                Log.i("debug","long press, everybody!");
-//                EbayItemsArrayAdapter.showComposeDialog(((IntroActivity) getActivity()), "Edit alert", ((SearchItem) searchItemsListView.getItemAtPosition(position)).getSearchKeywords());
-//                return true;
-//            }
-//        });
-//        SwipeDismissListViewTouchListener touchListener =
-//                new SwipeDismissListViewTouchListener(
-//                        searchItemsListView,
-//                        new SwipeDismissListViewTouchListener.DismissCallbacks() {
-//                            @Override
-//                            public boolean canDismiss(int position) {
-//                                return true;
-//                            }
-//
-//                            @Override
-//                            public void onDismiss(ListView listView, int[] reverseSortedPositions) {
-//                                for (int position : reverseSortedPositions) {
-//                                    mSearchItemsArrayAdapter.remove(mSearchItemsArrayAdapter.getItem(position));
-//                                    ((IntroActivity)getActivity()).deleteSearch(mSearchItemsArrayAdapter.getItem(position));
-//                                }
-//                                mSearchItemsArrayAdapter.notifyDataSetChanged();
-//                            }
-//                        });
-//        searchItemsListView.setOnTouchListener(touchListener);
-//        if (getArguments() != null) {
-//            SearchItem itemToAdd = new SearchItem(getArguments().getString("shoppingitem").toString());
-//            mSearchItemsArrayAdapter.add(itemToAdd);
-//            persistSearch(itemToAdd);
-//        }
         retrieveSearchesFromDB();
         if (!mSearchItemsArrayAdapter.isEmpty()) {
             mNoItemsYet.setVisibility(View.GONE);
         }
         return view;
     }
-
-//    private void showComposeDialog() {
-//        mComposeDialog = CreateSearchDialogFragment.newInstance(getResources().getString(R.string.create_alert_for));
-//        mComposeDialog.show(getActivity().getSupportFragmentManager(), "fragment_compose_search");
-//    }
-
-//    public void persistSearches() {
-//        Log.i("DEBUG", "testing search persist");
-//        for (int i = 0; i < getmSearchItemsArrayAdapter().getCount(); i++) {
-//            SearchItem searchItem = getmSearchItemsArrayAdapter().getItem(i);
-////            SearchItem searchModel = new SearchModel(searchItem.getSearchKeywords(), false); // Todo unhardcode alerts from false
-//            searchItem.save();
-//        }
-//    }
 
     @Override
     public void onAttach(Activity activity) {
@@ -126,14 +80,9 @@ public class ShoppingListFragment extends Fragment {
                 }
             }
 
-
             if (!allSearchModels.isEmpty()) {
                 mNoItemsYet.setVisibility(View.GONE);
             }
         }
-    }
-
-    public SearchItemsArrayAdapter getmSearchItemsArrayAdapter() {
-        return mSearchItemsArrayAdapter;
     }
 }
